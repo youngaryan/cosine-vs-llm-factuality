@@ -1,0 +1,22 @@
+\begin{tabular}{lrlrrrr}
+\toprule
+ & \multicolumn{2}{c}{RAGTruth test AUC} & FaithB. & HaluEval & \multicolumn{2}{c}{Counterfactual} \\
+Feature set & AUC & $\Delta$ vs.\ full [95\% CI] & AUC & AUC & drop\,\% & AUC \\
+\midrule
+All groups (full) & .817 &  & .637 & .977 & 79.4 & .606 \\
+\midrule
+$-$ cosine & .818 & .000 [-.002, .003] & .644 & .983 & 79.4 & .612 \\
+$-$ lexical & .794 & -.023 [-.033, -.014] & .583 & .693 & 89.8 & .639 \\
+$-$ number & .812 & -.005 [-.009, -.002] & .633 & .976 & 79.3 & .592 \\
+$-$ entity & .810 & -.008 [-.012, -.003] & .633 & .974 & 79.0 & .573 \\
+$-$ negation & .816 & -.001 [-.002, .000] & .642 & .978 & 93.1 & .608 \\
+$-$ length & .808 & -.010 [-.015, -.005] & .644 & .965 & 76.7 & .607 \\
+\midrule
+only cosine & .746 &  & .535 & .244 & 83.4 & .580 \\
+only lexical & .789 &  & .637 & .973 & 88.6 & .551 \\
+only number & .565 &  & .504 & .560 & 22.3 & .597 \\
+only entity & .663 &  & .581 & .719 & 39.3 & .652 \\
+only negation & .547 &  & .580 & .533 & 26.5 & .563 \\
+only length & .661 &  & .597 & .975 & 47.8 & .555 \\
+\bottomrule
+\end{tabular}

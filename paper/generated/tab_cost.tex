@@ -1,0 +1,21 @@
+\begin{tabular}{lrrrrrrr}
+\toprule
+Method & Median ms & p95 ms & Wall s / 1k & CPU s / 1k & Cold start s & Prompt tok. & Out tok. \\
+\midrule
+Lexical features + checks & 1.4 & 2.8 & 1.5 & 2 & 0.0 & -- & -- \\
+MiniLM cosine & 321 & 1,083 & 433 & 2,574 & 6.4 & -- & -- \\
+\quad evidence embeddings cached & 42.9 & 83.2 & 49.1 & 292 & 6.4 & -- & -- \\
+BGE-small cosine & 631 & 2,046 & 831 & 4,934 & 1.8 & -- & -- \\
+\quad evidence embeddings cached & 85.1 & 163 & 95.6 & 562 & 1.8 & -- & -- \\
+Risk model: full & 414 & 1,164 & 513 & 3,046 & 6.4 & -- & -- \\
+\midrule
+BERTScore (roberta-base) & 1,005 & 1,945 & 1,039 & 6,122 & 1.7 & -- & -- \\
+NLI (DeBERTa-v3-base) & 2,302 & 5,865 & 2,900 & 15,206 & 9.7 & -- & -- \\
+\midrule
+Judge (3B), new source & 10,292 & 23,181 & 11,791 & -- & 4.4 & 861 & 9.0 \\
+\quad same source (prefix cached) & 4,711 & 5,955 & 4,736 & -- & 4.4 & 839 & 9.0 \\
+\midrule
+Judge (14B), new source & 38,475 & 95,366 & 46,463 & -- & 15.7 & 867 & 10.1 \\
+\quad same source (prefix cached) & 13,547 & 19,472 & 13,953 & -- & 15.7 & 846 & 9.4 \\
+\bottomrule
+\end{tabular}

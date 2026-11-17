@@ -1,0 +1,141 @@
+\section{Results}
+\label{sec:results}
+
+All intervals are 95\% cluster-bootstrap intervals; ``BAcc'' is balanced accuracy at the threshold $\tau^\mathrm{bal}$ fitted on the calibration split of the same domain unless stated otherwise.
+
+\subsection{Natural data (RQ1)}
+\label{sec:res-natural}
+
+\begin{table*}[t]
+\centering\small
+\setlength{\tabcolsep}{3.2pt}
+\resizebox{\textwidth}{!}{\input{generated/tab_main}}
+\caption{Evidence-grounded faithfulness on the full test splits. AUC treats \emph{unsupported} as the positive class; BAcc at the calibration-fitted $\tau^\mathrm{bal}$. ``RAGTruth pooled'' uses per-task thresholds and pools the \NTestRagtruth\ RAGTruth test examples. Bold: best per column. HaluEval-QA labels are synthetic.}
+\label{tab:main}
+\end{table*}
+
+\paragraph{Faithfulness.} Table~\ref{tab:main} gives the cheap evaluators on the full test splits. No cheap method is good in absolute terms. On pooled RAGTruth, MiniLM mean-max cosine reaches a balanced accuracy of \PoolCosBacc\ \PoolCosBaccCi, the same as the NLI scorer (\PoolNliBacc\ \PoolNliBaccCi) and below plain TF--IDF cosine; BGE-small and BERTScore rank better than MiniLM (AUC \PoolBgeAuc\ and \PoolBertAuc\ vs.\ \PoolCosAuc) but do not threshold better. The sentence-level configuration matters more than the encoder: comparing the whole answer with the whole evidence (``document'') is the weakest embedding configuration on RAGTruth. The full risk model has the highest ranking quality (pooled AUC \PoolRiskAuc), but at its calibration-fitted threshold its pooled balanced accuracy (\PoolRiskBacc) is below that of the cosine-plus-checks variant (\PoolRiskChkBacc\ \PoolRiskChkBaccCi): its threshold carries a false-acceptance rate of \PoolRiskFar\% onto the test split, which already shows that a good ranking does not imply a good fixed threshold.
+
+Two out-of-domain sets bracket these numbers. On FaithBench, which collects summaries that earlier detectors disagree on, every cheap method is close to chance (AUC \FbCosAuc\ for cosine, \FbNliAuc\ for NLI, at most \FbRiskAuc\ for the risk model). On HaluEval-QA every embedding method is \emph{below} chance (MiniLM AUC \HaluCosAuc\ \HaluCosAucCi): the synthetic hallucinated answers are on average \emph{more} similar to the knowledge passage than the correct ones. The risk model reaches AUC \HaluRiskAuc, but a model that sees only the three length features already reaches \AblOnlyLengthHaluAuc\ on HaluEval-QA (Table~\ref{tab:ablation}), so this number measures an artefact of how the benchmark was built, not grounding \citep{hussain2026parallax}.
+
+\begin{table}[t]
+\centering\small
+\setlength{\tabcolsep}{3pt}
+\resizebox{\columnwidth}{!}{\input{generated/tab_evouna}}
+\caption{Reference-based correctness on EVOUNA-NQ (\NTestEvouna\ test answers). The lower block compares the small judge with cheap methods on the judged subset.}
+\label{tab:evouna}
+\end{table}
+
+\paragraph{Correctness.} Against short reference answers (Table~\ref{tab:evouna}) lexical containment---does the answer contain a reference string---is a strong baseline (BAcc \EvContainBacc) and embedding cosine is clearly weaker (\EvCosBacc). NLI reaches \EvNliBacc. The ten-feature reference-mode risk model reaches \EvRiskBacc\ with a false-acceptance rate of \EvRiskFar\%. On the \EvJudgeSmallN\ judged answers, the small judge (\EvJudgeSmallBacc\ \EvJudgeSmallBaccCi) beats document cosine (cosine minus judge: \EvCosMinusSmall\ \EvCosMinusSmallCi) but loses to containment (containment minus judge: \EvContainMinusSmall\ \EvContainMinusSmallCi) and to the risk model (\EvRiskMinusSmall\ \EvRiskMinusSmallCi).
+
+\begin{table*}[t]
+\centering\small
+\resizebox{\textwidth}{!}{\input{generated/tab_judged}}
+\caption{LLM judges on the judged subsets (fixed, source-clustered samples of the test splits). Cheap methods are evaluated on exactly the same examples. FAR and FRR in \%. The last column is the full risk model minus the judge, with a 95\% cluster-bootstrap interval.}
+\label{tab:judged}
+\end{table*}
+
+\paragraph{LLM judges on evidence.} The small judge (Table~\ref{tab:judged}) is not a usable faithfulness evaluator in our setting. It labels most faithful RAGTruth answers \textsc{unsupported} (false-rejection rate \QaJudgeSmallFrr\% on RT-QA, \SumJudgeSmallFrr\% on RT-Sum and \DttJudgeSmallFrr\% on RT-D2T), giving balanced accuracies between \DttJudgeSmallBacc\ and \SumJudgeSmallBacc. We checked that this is not a pipeline artefact: the longest judged prompt is far below the context limit, the evidence and answer are rendered intact, and only \JudgeSmallFailures\ of \JudgeSmallCalls\ calls failed to parse. The same model is competitive on short-answer correctness (Table~\ref{tab:evouna}), so the failure is specific to verifying multi-sentence answers against long evidence. A reworded rubric (Appendix~\ref{app:prompts}) on \SensN\ answers agrees with the original in \SensAgree\% of verdicts ($\kappa=\SensKappa$) and lowers FRR from \SensFrrOne\% to \SensFrrTwo\%, but balanced accuracy stays low (\SensBaccOne\ vs.\ \SensBaccTwo).
+
+The 14B judge, run on a smaller nested subset (\QaJudgeStrongN\ answers per RAGTruth task, \FbJudgeStrongN\ FaithBench summaries), shows that this is not inherent to LLM judging. On RT-QA and RT-D2T it reaches \QaJudgeStrongBacc\ and \DttJudgeStrongBacc; on RT-D2T it beats cosine and the risk model on the same answers (not NLI) and the small judge (\DttStrongMinusSmall\ \DttStrongMinusSmallCi). On summaries it fails in the opposite direction, accepting most unsupported ones (FAR \SumJudgeStrongFar\% on RT-Sum, \FbJudgeStrongFar\% on FaithBench, where the risk model beats it). The two judges hardly agree on evidence data ($\kappa$ \SumJudgeKappa--\QaJudgeKappa) but agree moderately on EVOUNA-NQ ($\kappa=\EvJudgeKappa$), where the 14B judge (\EvJudgeStrongBacc\ \EvJudgeStrongBaccCi) does not differ from containment (\EvContainMinusStrong\ \EvContainMinusStrongCi) and trails the risk model (\EvRiskMinusStrong\ \EvRiskMinusStrongCi). With 36 answers per RAGTruth task, these comparisons are qualitative.
+
+\begin{table*}[t]
+\centering\small
+\input{generated/tab_errors}
+\caption{Detection rate (\%, flagged at $\tau^\mathrm{bal}$) of human-annotated RAGTruth hallucinations by annotated type; an answer can carry several types. Judge rates are on the judged subset, with $n$ in parentheses.}
+\label{tab:errors}
+\end{table*}
+
+\paragraph{Annotated error types.} Table~\ref{tab:errors} breaks detection down by RAGTruth's own annotation. Differences between types are modest for every cheap method; NLI detects baseless (unsupported) information more often than conflicts (\ErrBaselessOnlyNli\% vs.\ \ErrConflictOnlyNli\%), and the risk model is weakest on answers whose only errors are conflicts (\ErrConflictOnlyRisk\%). Natural data therefore give little guidance on \emph{which} errors a method misses, which motivates the controlled test below.
+
+\subsection{Counterfactual stress test (RQ2)}
+\label{sec:res-cf}
+
+\begin{table*}[t]
+\centering\small
+\resizebox{\textwidth}{!}{\input{generated/tab_cf_drop}}
+\caption{Counterfactual pairs: share of flips that lower the support score (\%) by perturbation type, over all \NCfPairs\ pairs; ``Inv.'' is the inversion rate (\%) on the \NCfInv\ matched-locus triplets with a paraphrase, i.e.\ how often the flip scores at least as high as the paraphrase of the same sentence; ``Para.\ $\Delta$'' is the mean absolute score change caused by the paraphrase in calibration-set standard deviations.}
+\label{tab:cfdrop}
+\end{table*}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{../figures/fig_cf_types.pdf}
+\caption{Counterfactual sensitivity by perturbation type. (a) Share of flips that lower the score. (b) Paired detection: the unedited answer is accepted and the flip is rejected at the threshold fitted on natural calibration data.}
+\label{fig:cftypes}
+\end{figure*}
+
+\paragraph{Scores move, decisions do not.} A single-fact flip lowers MiniLM's mean-max cosine in \CfCosDrop\% of pairs (Table~\ref{tab:cfdrop}), and the share is at least as high for BGE-small, BERTScore and NLI. Score-drop rates therefore make every method look sensitive. Decisions tell a different story (Figure~\ref{fig:cftypes}b, Table~\ref{tab:cfdetect}): with thresholds fitted on natural data, cosine accepts the unedited answer and rejects the flip in only \CfCosDetect\% \CfCosDetectCi\ of pairs. It rejects \CfCosFlipRej\% of flipped answers, but it accepts only \CfCosOrigAcc\% of the unedited faithful answers in the first place, so most rejections of flips are rejections the original would have received too. It accepts paraphrases about as often as the originals (\CfCosParaAcc\% vs.\ \CfCosParaOrigAcc\%), and among paraphrases whose original was accepted it rejects only \CfCosParaFalseRej\%. The descriptive half of H1 therefore holds: cosine is stable under rewording and rarely turns an accepted answer into a rejected one when a fact is changed. Paired detection is \CfNliDetect\% for NLI, \CfRiskDetect\% for the full risk model and \CfRiskChkDetect\% for the cosine-plus-checks variant; NLI exceeds cosine by \HoneNliMinusCos\ points \HoneNliMinusCosCi\ (Holm-adjusted $p\HoneNliHolm$).
+
+The preregistered judge contrast of H1 uses the small judge (\CfJSmallN\ pairs, \CfJSmallBases\ bases; Table~\ref{tab:cfjudge}). It rejects \CfJSmallFlipRej\% of flips but accepts only \CfJSmallOrigAcc\% of originals, so its paired detection (\CfJSmallDetect\%) does not differ from cosine's (\HoneJudgeMinusCos\ points \HoneJudgeMinusCosCi, Holm-adjusted $p\HoneJudgeHolm$): H1 holds against NLI but not against the small judge. In an exploratory run (\CfJStrongN\ pairs, \CfJStrongBases\ bases, mostly additions, entities and negations), the 14B judge detects \CfJStrongDetect\% \CfJStrongDetectCi, \CfJStrongMinusCos\ points more than cosine \CfJStrongMinusCosCi\ and \CfJStrongMinusNli\ more than NLI \CfJStrongMinusNliCi\ on the same pairs---the only evaluator whose decisions track single-fact edits.
+
+\paragraph{Inversion isolates sensitivity to the fact.} The paired detection rate is bounded by how often the original is accepted, and the score-drop rate rewards any change of wording. The inversion rate avoids both: holding the sentence, the evidence and the rest of the answer fixed, it asks whether the factual error scores at least as high as a harmless paraphrase. Here the methods separate sharply. NLI inverts in \CfNliInv\% \CfNliInvCi\ of triplets, MiniLM and BGE-small cosine in \CfCosInv\% and \CfBgeInv\%, BERTScore in \CfBertInv\%, the full risk model in \CfRiskInv\% and token precision in \CfTokPrecInv\%; MiniLM min-max cosine, which is driven by the least-supported sentence, inverts in most triplets. For a cosine score a paraphrase and a factual error are close to interchangeable, and the distributions of their score changes overlap almost completely (Figure~\ref{fig:locus}a).
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{../figures/fig_locus.pdf}
+\caption{(a) Change in MiniLM mean-max cosine caused by a meaning-preserving paraphrase and by a single-fact flip of the same sentence. (b) Mean score drop caused by a flip, in calibration-set standard deviations, by the number of sentences in the answer.}
+\label{fig:locus}
+\end{figure*}
+
+\paragraph{Error types differ (H2).} Detection depends on the type of edit for every evaluator (within-base permutation test, $p\HtwoCosPerm$ for each; Cram\'er's $V$ from \CfNliCramerV\ for NLI to \CfRiskCramerV\ for the risk model). Unsupported additions are the only edit that cosine detects with any regularity (\CfCosDetectAddition\% paired detection); for numbers, dates, causal connectives and direction words its paired detection is \CfCosDetectNumber\%, \CfCosDetectDate\%, \CfCosDetectCausal\% and \CfCosDetectDirection\%. NLI is the most uniform across types (\CfNliDetectCausal\% to \CfNliDetectNegation\%) and the only method with substantial negation detection (\CfNliDetectNegation\%, against \CfCosDetectNegation\% for MiniLM). The explicit number and entity checks raise the risk model's detection of number and entity flips (\CfRiskDetectNumber\% and \CfRiskDetectEntity\%) but not of negation: a negation flip lowers the full model's support score in only \CfRiskDropNegation\% of pairs. Its strongest inputs barely react to negation---token precision falls for only \CfTokPrecDropNegation\% of negation flips, since words such as ``not'' usually occur somewhere in the evidence---and the weight it learned on the negation-mismatch feature is small and negative (Table~\ref{tab:coef}). A feature-based detector inherits the error distribution of its training labels.
+
+\paragraph{Dilution.} Because cosine and NLI average over answer sentences, a fixed one-sentence error matters less in a longer answer (Figure~\ref{fig:locus}b). For NLI the mean drop falls from \CfNliDilFirst\ to \CfNliDilLast\ calibration standard deviations between the shortest and the longest answers; cosine's drop is small at every length (\CfCosDilFirst\ to \CfCosDilLast). The risk model, which includes per-sentence minima and counts of unsupported numbers and entities, does not dilute in the same way.
+
+\subsection{Threshold transfer (RQ3)}
+\label{sec:res-transfer}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{../figures/fig_transfer.pdf}
+\caption{False-acceptance rate (\%) on the test split of the column domain when the threshold is calibrated to $\mathrm{FAR}\le5\%$ on the row domain. Bold: in-domain cells. *: the lower 95\% bound exceeds 5\%.}
+\label{fig:transfer}
+\end{figure*}
+
+A threshold calibrated to $\mathrm{FAR}\le5\%$ mostly holds in its own domain: only \TrCosDiagExceed\ of the five diagonal cosine cells, FaithBench, has a lower confidence bound above 5\% (FAR \TrCosDiagMax\%), and the other in-domain cells stay close to the budget (Figure~\ref{fig:transfer}). The other evaluators behave similarly in-domain (one or two exceeding cells each, all below 14\%), except the full risk model, which has none. Across domains it does not. For MiniLM cosine \HthreeExceed\ of \HthreeCells\ off-diagonal cells exceed 5\% with the lower bound above 5\%, up to \TrCosOffMax\%, which supports H3 by the preregistered criterion (Bonferroni-adjusted bootstrap $p=\HthreePBonf$). The failure is not specific to cosine: the corresponding counts are \TrBgeOffExceed\ for BGE-small, \TrBertOffExceed\ for BERTScore, \TrNliOffExceed\ for NLI and \TrRiskOffExceed\ for the risk model, whose worst cell reaches \TrRiskOffMax\%. Thresholds learned on RT-D2T, where two thirds of answers are unsupported and support scores are low throughout, are the most permissive elsewhere; thresholds learned on FaithBench and HaluEval-QA are conservative on RAGTruth. Within RAGTruth, a threshold calibrated on long answers and applied to short ones raises cosine FAR to \ShLenCosLongToShort\% and the risk model's to \ShLenRiskLongToShort\%, whereas changing the generator family moves FAR by a few points only (Table~\ref{tab:shift}). Calibrated probabilities do not transfer either: the risk model's expected calibration error is \CalQaEce\ on RT-QA but \CalFbEce\ on FaithBench and \CalHaluEce\ on HaluEval-QA.
+
+\subsection{Selective evaluation (RQ4)}
+\label{sec:res-cascade}
+
+\paragraph{Cheap stage.} On the full RAGTruth test set at $\alpha=0.05$ and $\beta=0.10$ (Table~\ref{tab:cheapstage}), the cosine gate resolves \CsCosFiveCov\% \CsCosFiveCovCi\ of answers without a judge, with a cheap-stage FAR of \CsCosFiveFar\%. The full risk model resolves \CsRiskFiveCov\% \CsRiskFiveCovCi\ at a cheap-stage FAR of \CsRiskFiveFar\%, \HfourRiskDiff\ points more than cosine \HfourRiskDiffCi\ (Holm-adjusted $p\HfourHolm$); NLI and BGE-small resolve \HfourNliDiff\ and \HfourBgeDiff\ points more than MiniLM. The cosine-plus-checks variant does not resolve more than cosine (\HfourRiskChkDiff\ points, \HfourRiskChkDiffCi). Within domain the calibration-time FAR budget is approximately met by every gate; on FaithBench, with thresholds carried over from RT-Sum, the cheap-stage FAR rises to \FbOodCosFar\% for cosine and \FbOodRiskFar\% for the risk model.
+
+\begin{table*}[t]
+\centering\small
+\resizebox{\textwidth}{!}{\input{generated/tab_cascade_small}}
+\caption{System results on the RAGTruth and FaithBench judged subset ($n=\SysSmallN$) with the small judge. ``Judged'' is the share escalated; ``Random'' is the mean balanced accuracy when the same number of randomly chosen examples is escalated and the rest decided by the gate's $\tau^\mathrm{bal}$.}
+\label{tab:cascadesmall}
+\end{table*}
+
+\paragraph{System.} With the small judge (Table~\ref{tab:cascadesmall}), always judging gives a balanced accuracy of only \SysSmallJudgeBacc\ on the judged subset, because the judge rejects most faithful answers. Every cascade is at least as good, and the risk-gated cascade at $\alpha=0.05$ is \SysSmallRiskFiveDiff\ \SysSmallRiskFiveDiffCi\ better while sending \SysSmallRiskFiveEsc\% of examples to the judge; random escalation of the same share gives \SysSmallRiskFiveRand. The second condition of H4 (no more than two points below always-judge) is therefore met, but trivially, because the reference point is weak; the escalation curves (Figure~\ref{fig:escalation}) show that with this judge the best policy escalates only a small share of examples, and that escalating the smallest-margin examples first beats random escalation clearly for the risk model, slightly for NLI and not at all for cosine.
+
+With the 14B judge on its \SysStrongN\ RAGTruth answers (Table~\ref{tab:cascadestrong}), the ordering reverses. Judging everything gives \SysStrongJudgeBacc\ \SysStrongJudgeBaccCi, and every cheap method alone is worse (cosine \SysStrongNeverCosDiff\ \SysStrongNeverCosDiffCi, full risk model \SysStrongNeverRiskDiff\ \SysStrongNeverRiskDiffCi). The cascades now trade accuracy for judge calls. The cosine gate at $\alpha=0.05$ skips \SysStrongCosFiveSaved\% of judge calls at \SysStrongCosFiveDiff\ \SysStrongCosFiveDiffCi; the risk gate skips \SysStrongRiskFiveSaved\% at \SysStrongRiskFiveDiff\ \SysStrongRiskFiveDiffCi; the cosine-plus-checks gate skips \SysStrongRiskChkFiveSaved\% at \SysStrongRiskChkFiveDiff\ \SysStrongRiskChkFiveDiffCi. The intervals include both no loss and losses well beyond the two-point margin of H4, so on this subset the accuracy condition of H4 can be neither confirmed nor rejected for the stronger judge. Targeted escalation still beats random escalation of the same share for the risk gate (\SysStrongRiskFiveBacc\ vs.\ \SysStrongRiskFiveRand).
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{../figures/fig_escalation.pdf}
+\caption{(a) System balanced accuracy on the small-judge subset as a function of the share escalated, escalating the smallest-margin examples first (solid) or at random (dashed, mean over draws). (b) Risk--coverage curves of the cheap methods alone.}
+\label{fig:escalation}
+\end{figure*}
+
+\paragraph{Correctness.} On the full EVOUNA-NQ test set the reference-mode risk model resolves \EvCsRiskCov\% of answers at a cheap-stage FAR of \EvCsRiskFar\%. On the 600 judged answers it escalates \EvCsRiskEsc\% to the small judge, and the system reaches a balanced accuracy of \EvCsRiskSysBacc; the cosine-gated system escalates \EvCsCosEsc\% and reaches \EvCsCosSysBacc.
+
+\subsection{Cost (RQ5)}
+\label{sec:cost}
+
+\begin{table*}[t]
+\centering\small
+\resizebox{\textwidth}{!}{\input{generated/tab_cost}}
+\caption{Measured cost on one CPU-only laptop (\HwCores\ logical cores, \HwRam\,GB RAM, \HwThreads\ PyTorch threads, no GPU), on a fixed sample of \CostSampleN\ RAGTruth answers (mean \CostAnsWords\ answer words, \CostEvWords\ evidence words), single process, no other job running. Wall and CPU seconds per 1{,}000 evaluations exclude cold start, which is reported separately. Judge rows: 30 calls each; ``prefix cached'' is a second answer for the same source, for which the server reuses the cached evidence prefix. No paid API was used, so no monetary cost is reported.}
+\label{tab:cost}
+\end{table*}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{../figures/fig_pareto.pdf}
+\caption{Balanced accuracy against measured wall-clock cost per 1{,}000 evaluations on the two judged subsets. Cascade cost is the cheap-stage cost for every example plus the judge cost for the escalated share. Error bars: 95\% cluster-bootstrap intervals. The panels use different examples and are not directly comparable.}
+\label{fig:pareto}
+\end{figure*}
+
+Table~\ref{tab:cost} reports measured cost. Lexical features with the number and entity checks take \CostLexicalAndChecksWall\,s per 1{,}000 answers. MiniLM cosine takes \CostMinilmCosineWall\,s including evidence encoding and \CostMinilmCosineEvidenceCachedWall\,s when evidence embeddings are cached; the full risk model, which needs MiniLM embeddings, takes \CostRiskFullWall\,s. Relative to MiniLM cosine with evidence encoding, BERTScore costs \CostBertscoreRatio$\times$, NLI \CostNliRatio$\times$, the 3B judge \CostJudgeSmallRatio$\times$ (\CostJudgeSmallPrefixCachedRatio$\times$ when the evidence prefix is cached) and the 14B judge \CostJudgeStrongRatio$\times$ (\CostJudgeStrongPrefixCachedRatio$\times$). Judge cost is dominated by reading the prompt (about \CostJudgeSmallPtok\ tokens, processed at \CostJudgeSmallTokPerS\ tokens/s by the 3B and \CostJudgeStrongTokPerS\ tokens/s by the 14B model), which is why prefix caching helps so much when several answers share one source.
+
+Figure~\ref{fig:pareto} combines cost with accuracy. With the 3B judge, the risk gate is better and cheaper than judging everything at every $\alpha$; at $\alpha=0.20$ it reaches \SysSmallRiskTwentyBacc\ while judging \SysSmallRiskTwentyEsc\% of examples. With the 14B judge, every cheap method alone is far below the judge, and the gates save between a quarter and two fifths of judge time at an accuracy cost that this subset cannot pin down. These cost figures are specific to one CPU laptop; we did not measure GPU inference, where the ratios between methods may differ.

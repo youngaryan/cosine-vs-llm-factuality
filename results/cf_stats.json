@@ -1,0 +1,58 @@
+{
+ "bases": 1517,
+ "pairs": 6145,
+ "by_type": {
+  "addition": 1517,
+  "causal": 273,
+  "date": 540,
+  "direction": 466,
+  "entity": 1018,
+  "negation": 1432,
+  "number": 773,
+  "role_swap": 126
+ },
+ "by_type_domain": {
+  "addition|ragtruth_data2txt": 286,
+  "addition|ragtruth_qa": 549,
+  "addition|ragtruth_summary": 682,
+  "causal|ragtruth_data2txt": 10,
+  "causal|ragtruth_qa": 107,
+  "causal|ragtruth_summary": 156,
+  "date|ragtruth_data2txt": 41,
+  "date|ragtruth_qa": 108,
+  "date|ragtruth_summary": 391,
+  "direction|ragtruth_data2txt": 44,
+  "direction|ragtruth_qa": 138,
+  "direction|ragtruth_summary": 284,
+  "entity|ragtruth_data2txt": 269,
+  "entity|ragtruth_qa": 129,
+  "entity|ragtruth_summary": 620,
+  "negation|ragtruth_data2txt": 283,
+  "negation|ragtruth_qa": 473,
+  "negation|ragtruth_summary": 676,
+  "number|ragtruth_data2txt": 210,
+  "number|ragtruth_qa": 217,
+  "number|ragtruth_summary": 346,
+  "role_swap|ragtruth_data2txt": 9,
+  "role_swap|ragtruth_qa": 4,
+  "role_swap|ragtruth_summary": 113
+ },
+ "matched_locus": 3804,
+ "rejections": {
+  "no_applicable_edit": 39,
+  "no_grounded_sentence": 7
+ },
+ "paraphrase": {
+  "model": "phi4-mini:3.8b",
+  "attempted": 240,
+  "kept": 193,
+  "rejected": {
+   "entity_dropped": 16,
+   "numbers_changed": 7,
+   "too_similar": 22,
+   "empty_or_identical": 1,
+   "negation_parity": 1
+  },
+  "eligible_bases": 1517
+ }
+}

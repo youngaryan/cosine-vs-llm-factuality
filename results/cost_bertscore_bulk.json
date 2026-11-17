@@ -1,0 +1,7 @@
+{
+ "model": "FacebookAI/roberta-base",
+ "load_s": 2.101074899896048,
+ "examples": 26205,
+ "seconds": 4724.6027658999665,
+ "threads": 6
+}

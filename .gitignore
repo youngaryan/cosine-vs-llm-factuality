@@ -1,0 +1,23 @@
+# Third-party datasets: download them with the commands in data/README.md (not redistributed here)
+data/raw/
+data/processed/
+
+# Run logs (contain local machine paths)
+results/log_*.txt
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# LaTeX intermediates (paper/main.pdf is kept)
+paper/*.aux
+paper/*.bbl
+paper/*.blg
+paper/*.log
+paper/*.out
+paper/*.toc
+
+# Generated arXiv build tree (rebuild with: python src/make_arxiv.py)
+arxiv/src/
+arxiv/test_build/

@@ -1,0 +1,44 @@
+seed: 20261116
+
+data:
+  ragtruth:
+    train_sources_per_task: 200      # sampled from the official train split
+    calib_sources_per_task: 100      # sampled from the official train split, disjoint
+    # official test split is used in full
+  faithbench: {calib_sources: 30}    # remaining 50 sources are test
+  evouna_nq: {train_questions: 1000, calib_questions: 600}   # remainder is test
+  halueval_qa: {calib_items: 500, test_items: 1000}          # each item -> right + hallucinated answer
+
+chunking:
+  max_chunk_words: 60                # evidence sentences longer than this are windowed
+  window_sentences: 2                # evidence chunk = 2 consecutive sentences, stride 1
+
+embedders:
+  minilm: sentence-transformers/all-MiniLM-L6-v2      # primary
+  bge_small: BAAI/bge-small-en-v1.5
+  # A third embedder was planned and not run (see EXPERIMENT_STATUS.md, Deviations): bge-base-en-v1.5 could not be
+  # downloaded for lack of disk space, and nomic-embed-text through Ollama reached only ~6 texts/s on this machine.
+  # src/score_cheap.py still contains the optional nomic path; all reported runs used --skip-nomic.
+bertscore: {model: FacebookAI/roberta-base, layer: 10, idf: false, rescale: false}
+nli: {model: MoritzLaurer/DeBERTa-v3-base-mnli-fever-anli, top_k_chunks: 2, max_length: 320}
+
+judges:
+  small:  {model: "llama3.2:3b", ollama_id: a80c4f17acd5}
+  strong: {model: "qwen2.5:14b", ollama_id: 7cdf5a0187d5}
+  options: {temperature: 0, seed: 20261116, num_ctx: 6144, num_predict: 24}
+  subsets:                           # number of source groups (all their answers are judged)
+    small:  {ragtruth_per_task: 30, faithbench_sources: 50, evouna_examples: 600, cf_bases: 81}
+    strong: {ragtruth_per_task: 6,  faithbench_sources: 10, evouna_examples: 150, cf_bases: 21}
+  prompt_sensitivity: {judge: small, ragtruth_per_task: 10}
+
+counterfactual:
+  paraphrase_model: "phi4-mini:3.8b" # not used as a judge
+  paraphrase_bases: 240            # bases that receive an LLM paraphrase of the target sentence
+  types: [negation, number, date, entity, direction, causal, role_swap, addition]
+
+router:
+  alphas: [0.05, 0.10, 0.20]
+  primary_alpha: 0.05
+  beta_false_reject: 0.10            # cheap-stage budget for rejecting supported answers
+
+stats: {bootstrap: 2000}

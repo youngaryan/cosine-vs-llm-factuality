@@ -1,0 +1,19 @@
+\begin{tabular}{lrrrrrrrrrrr}
+\toprule
+Method & Neg. & Num. & Date & Entity & Role & Dir. & Causal & Add. & All & Inv. & Para.\ $\Delta$ \\
+$n$ pairs & 1432 & 773 & 540 & 1018 & 126 & 466 & 273 & 1517 & 6145 & 476 & 193 \\
+\midrule
+Token precision & 14.0 & 98.8 & 67.8 & 99.9 & 0.0 & 97.9 & 27.8 & 100.0 & 71.5 & 75.2 & .20 \\
+MiniLM cosine (document) & 56.1 & 54.9 & 57.2 & 86.6 & 69.0 & 59.4 & 55.7 & 82.2 & 68.0 & 43.7 & .04 \\
+MiniLM cosine (mean-max) & 89.9 & 71.9 & 70.0 & 91.4 & 74.6 & 79.6 & 63.4 & 98.9 & 86.1 & 36.6 & .04 \\
+MiniLM cosine (min-max) & 11.5 & 6.3 & 7.6 & 21.1 & 5.6 & 9.4 & 11.0 & 81.7 & 29.1 & 91.2 & .00 \\
+BGE-small cosine (mean-max) & 94.3 & 82.3 & 81.1 & 92.7 & 76.2 & 87.1 & 70.0 & 98.2 & 90.3 & 38.2 & .08 \\
+\midrule
+BERTScore & 91.9 & 97.2 & 94.8 & 98.6 & 93.7 & 95.9 & 83.5 & 99.9 & 95.9 & 55.0 & .09 \\
+NLI (SummaC-ZS style) & 84.6 & 87.7 & 90.2 & 87.8 & 91.3 & 92.7 & 67.0 & 93.5 & 88.2 & 12.8 & -.04 \\
+\midrule
+Risk model: cosine only & 82.1 & 66.8 & 68.1 & 94.1 & 74.6 & 78.3 & 62.3 & 97.4 & 83.4 & 40.1 & .04 \\
+Risk model: cosine + checks & 55.8 & 100.0 & 80.6 & 99.2 & 75.4 & 80.0 & 61.2 & 99.9 & 84.1 & 36.3 & .07 \\
+Risk model: full & 25.1 & 100.0 & 95.2 & 98.6 & 69.0 & 99.6 & 59.7 & 100.0 & 79.4 & 50.6 & .16 \\
+\bottomrule
+\end{tabular}

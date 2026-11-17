@@ -1,0 +1,31 @@
+\begin{tabular}{lrrlrr}
+\toprule
+Method & AUC & BAcc & 95\% CI & FAR & FRR \\
+\midrule
+Exact match & .582 & .582 & [.578, .585] & 0.2 & 83.5 \\
+Reference containment & .880 & .880 & [.869, .889] & 3.4 & 20.7 \\
+Token F1 & .874 & .811 & [.795, .828] & 32.4 & 5.4 \\
+TF--IDF cosine & .825 & .793 & [.778, .807] & 16.0 & 25.4 \\
+\midrule
+MiniLM cosine (document) & .802 & .738 & [.722, .752] & 27.9 & 24.6 \\
+MiniLM cosine (question+answer) & .813 & .738 & [.722, .754] & 29.8 & 22.6 \\
+BGE-small cosine (document) & .835 & .759 & [.743, .775] & 30.6 & 17.5 \\
+BERTScore & .737 & .687 & [.672, .702] & 29.9 & 32.7 \\
+NLI (SummaC-ZS style) & .884 & .820 & [.807, .832] & 24.1 & 11.9 \\
+\midrule
+Risk model: cosine only & .837 & .756 & [.740, .770] & 24.5 & 24.3 \\
+Risk model: full & \textbf{.957} & \textbf{.901} & [.889, .910] & 11.0 & 8.9 \\
+\midrule
+\multicolumn{6}{l}{\emph{Judged subset, $n=600$}} \\
+Judge (3B) & .888 & .815 & [.777, .849] & 18.0 & 18.9 \\
+Reference containment & .884 & .884 & [.859, .908] & 4.3 & 18.9 \\
+MiniLM cosine (document) & .811 & .742 & [.699, .780] & 28.0 & 23.7 \\
+Risk model: full & .959 & .917 & [.893, .942] & 8.1 & 8.4 \\
+\midrule
+\multicolumn{6}{l}{\emph{Judged subset, $n=150$}} \\
+Judge (14B) & .957 & .881 & [.827, .924] & 2.9 & 20.9 \\
+Reference containment & .903 & .903 & [.856, .946] & 2.9 & 16.5 \\
+MiniLM cosine (document) & .810 & .742 & [.652, .821] & 22.9 & 28.7 \\
+Risk model: full & .975 & .947 & [.903, .979] & 2.9 & 7.8 \\
+\bottomrule
+\end{tabular}

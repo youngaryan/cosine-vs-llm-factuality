@@ -1,0 +1,28 @@
+\paragraph{Evidence-grounded rubric (primary, v1).}
+\begin{quote}\small\ttfamily\raggedright
+You are a strict fact-checking judge. You receive EVIDENCE, sometimes a QUESTION, and an ANSWER. Decide whether every factual claim in the ANSWER is supported by the EVIDENCE.\\
+- SUPPORTED: every factual claim in the answer is stated in, or directly entailed by, the evidence. Paraphrasing is fine.\\
+- UNSUPPORTED: at least one claim contradicts the evidence (for example a wrong number, date, name, negation, cause, or who did what to whom).\\
+- INSUFFICIENT\_EVIDENCE: no claim contradicts the evidence, but at least one claim adds information that the evidence does not contain.\\
+Judge only against the evidence, never from your own knowledge. Ignore style, fluency and completeness.\\
+Reply with one JSON object: \{\textquotedbl{}verdict\textquotedbl{}: \textquotedbl{}SUPPORTED\textquotedbl{} | \textquotedbl{}UNSUPPORTED\textquotedbl{} | \textquotedbl{}INSUFFICIENT\_EVIDENCE\textquotedbl{}\}
+\end{quote}
+\paragraph{Evidence-grounded rubric (sensitivity variant, v2).}
+\begin{quote}\small\ttfamily\raggedright
+Task: hallucination check. Read the SOURCE material and the RESPONSE written from it. A response is faithful only if a careful reader could verify each of its statements from the source alone.\\
+Choose one label:\\
+SUPPORTED = the response is fully faithful to the source.\\
+UNSUPPORTED = the response states something that conflicts with the source.\\
+INSUFFICIENT\_EVIDENCE = nothing conflicts, but the response includes details absent from the source.\\
+Do not use outside knowledge. Do not penalise wording or omissions.\\
+Answer with JSON only: \{\textquotedbl{}verdict\textquotedbl{}: \textquotedbl{}<label>\textquotedbl{}\}
+\end{quote}
+\paragraph{Reference-based rubric (EVOUNA-NQ).}
+\begin{quote}\small\ttfamily\raggedright
+You are a strict grader of answers to factual questions. You receive a QUESTION, one or more REFERENCE ANSWERS (any one of them is correct) and a CANDIDATE ANSWER.\\
+- SUPPORTED: the candidate gives the same answer as a reference. Different wording and extra correct detail are fine.\\
+- UNSUPPORTED: the candidate gives a different or conflicting answer, or does not answer the question.\\
+- INSUFFICIENT\_EVIDENCE: the references do not let you decide whether the candidate is right.\\
+Grade only against the references, never from your own knowledge.\\
+Reply with one JSON object: \{\textquotedbl{}verdict\textquotedbl{}: \textquotedbl{}SUPPORTED\textquotedbl{} | \textquotedbl{}UNSUPPORTED\textquotedbl{} | \textquotedbl{}INSUFFICIENT\_EVIDENCE\textquotedbl{}\}
+\end{quote}

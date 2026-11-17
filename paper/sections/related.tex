@@ -1,0 +1,45 @@
+\section{Related Work}
+\label{sec:related}
+
+\paragraph{Similarity is not correctness.}
+Embedding cosine \citep{reimers2019sentence,xiao2023cpack} and BERTScore \citep{zhang2020bertscore} measure topical and lexical-semantic proximity. \citet{steck2024cosine} show that cosine values can be arbitrary under common training objectives, and \citet{silva2026semantic} report, on a synthetic legal RAG benchmark, that BERTScore separates correct from incorrect answers poorly compared with an LLM judge. Insensitivity of embeddings to negation is documented by \citet{cao2025semantic} and \citet{anschutz2023correct}. The closest study to ours is \citet{sinha2025semantic}, who compares BGE cosine, an NLI model, lexical overlap and an LLM judge under conformal calibration and finds that embedding-based detection degrades sharply on HaluEval; that study uses a random split inside each dataset and names distribution shift and an implemented cascade as future work.
+
+\paragraph{Factual consistency metrics and LLM judges.}
+Entailment-based metrics such as SummaC \citep{laban2022summac}, AlignScore \citep{zha2023alignscore} and MiniCheck \citep{tang2024minicheck}, and decompose-then-verify pipelines such as FActScore \citep{min2023factscore}, target evidence support directly. LLM judges \citep{liu2023geval,zheng2023judging} are now the default for open-ended evaluation; \citet{wang2023evaluating} show on EVOUNA that both lexical matching and LLM judges make systematic errors against human judgement, and \citet{godbole2025verify} show that factuality metrics disagree across datasets and are biased by paraphrase. \citet{rahnamoun2025multilayered} combine lexical, semantic and LLM-based layers for open-domain QA evaluation.
+
+\paragraph{Perturbation tests.}
+Rule-based transformations were introduced to train and test consistency models by FactCC \citep{kryscinski2020evaluating}, typed error annotation by FRANK \citep{pagnoni2021understanding}, and behavioural testing by CheckList \citep{ribeiro2020beyond}. \citet{gharsallah2026trust} perturb short reference answers with an LLM at graded severity to validate LLM judges, and \citet{nguyen2026accuracy} use minimal-edit pairs to probe fine-tuned Vietnamese detectors. None of these places a meaning-preserving and a meaning-changing edit at the same position of a long, human-verified RAG response and asks how a thresholded similarity score orders them.
+
+\paragraph{Selective evaluation and cascades.}
+Selective classification \citep{geifman2017selective} and distribution-free risk control \citep{angelopoulos2021learn,angelopoulos2022conformal} underlie cost-aware cascades such as FrugalGPT \citep{chen2023frugalgpt}. \citet{jung2025trust} escalate between LLM judges with a guarantee on human agreement. For hallucination detection, \citet{valentin2024cost} calibrate and combine detector scores, \citet{liu2026decision} and \citet{li2026jev} place a small decision model before a generative judge, and \citet{li2026principled} and \citet{goswami2025haltrag} calibrate multi-score detectors. \citet{dorosario2026jev} report that, in their setting, escalating a random subset of the same size matched confidence-gated escalation; we therefore include that control.
+
+\paragraph{Benchmarks and shift.}
+RAGTruth \citep{niu2024ragtruth} and FaithBench \citep{bao2025faithbench} provide human span- and response-level hallucination labels; HaluEval \citep{li2023halueval} provides synthetic hallucinated answers; FactBench \citep{bayat2025factbench}, PROBE \citep{zhang2026probe} and the faithfulness leaderboard of \citet{tamber2025benchmarking} are related resources. \citet{dubanowska2025representation} show that hidden-state probes fall to near chance out of distribution, and \citet{hussain2026parallax} argue that part of reported detector performance reflects benchmark construction artifacts.
+
+\paragraph{Position of this work.}
+Table~\ref{tab:related} summarises the comparison. Comparing cosine with an LLM judge, perturbing answers, calibrating thresholds and cascading evaluators are all established. What we add is their combination in one controlled design: matched-locus triplets scored by frozen natural-data thresholds, a full source-by-target transfer matrix for thresholds set to a false-acceptance target, and an implemented embedding-first cascade with measured local cost and a random-escalation control.
+
+\begin{table*}[t]
+\centering\small
+\resizebox{\textwidth}{!}{\begin{tabular}{lcccccc}
+\toprule
+Work & \makecell{Embedding\\similarity} & \makecell{LLM\\judge} & \makecell{Paired\\perturbations} & \makecell{Cross-domain\\threshold transfer} & \makecell{Implemented\\cheap$\rightarrow$LLM cascade} & \makecell{Measured\\cost} \\
+\midrule
+\citet{sinha2025semantic} & \yes & \yes & -- & -- (future work) & -- (future work) & price estimates \\
+\citet{silva2026semantic} & \yes & \yes & -- & -- & -- & n.v. \\
+\citet{gharsallah2026trust} & -- & \yes & \yes & -- & -- & -- \\
+\citet{nguyen2026accuracy} & -- & -- & \yes & -- & -- & -- \\
+\citet{rahnamoun2025multilayered} & \yes & \yes & -- & n.v. & layered fusion & n.v. \\
+\citet{jung2025trust} & -- & \yes & -- & -- & LLM$\rightarrow$LLM & \yes \\
+\citet{liu2026decision} & -- & \yes & -- & n.v. & classifier$\rightarrow$LLM & \yes \\
+\citet{dorosario2026jev} & -- & \yes & -- & -- & classifier$\rightarrow$LLM & \yes \\
+\citet{li2026jev} & -- & \yes & style pairs & frozen threshold & classifier$\rightarrow$LLM & \yes \\
+\citet{dubanowska2025representation} & -- & -- & -- & \yes\ (probes) & -- & -- \\
+\citet{godbole2025verify} & -- & \yes & paraphrase bias & cross-dataset & -- & -- \\
+\midrule
+This study & \yes & \yes & \yes\ (matched locus) & \yes\ (5$\times$5 matrix) & embedding$\rightarrow$LLM & \yes\ (local CPU) \\
+\bottomrule
+\end{tabular}}
+\caption{Closest prior work. ``n.v.''\ = not verified from the pages we could access; ``--'' = not part of the study as described in its abstract or full text. The table records what each study reports, not its quality.}
+\label{tab:related}
+\end{table*}

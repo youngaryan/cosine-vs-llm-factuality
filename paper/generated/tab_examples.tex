@@ -1,0 +1,25 @@
+\begin{tabular}{p{0.07\textwidth}p{0.58\textwidth}rrrl}
+\toprule
+Variant & Target sentence & MiniLM & NLI & Risk & Judge (3B) \\
+\midrule
+original & El Taco Tequila Taqueria is a trendy, casual Mexican restaurant located at 14 E Cota St, Santa Barbara, CA. & .574 & .389 & .542 & UNSUP \\
+paraphrase & Located at 14 E Cota St, Santa Barbara, CA, El Taco Tequila Taqueria is a trendy, casual Mexican eatery. & .574 & .388 & .547 & UNSUP \\
+number & El Taco Tequila Taqueria is a trendy, casual Mexican restaurant located at 24 E Cota St, Santa Barbara, CA. & .573 & .388 & .647 & UNSUP \\
+\midrule
+original & El Taco Tequila Taqueria is a trendy, casual Mexican restaurant located at 14 E Cota St, Santa Barbara, CA. & .574 & .389 & .542 & UNSUP \\
+paraphrase & Located at 14 E Cota St, Santa Barbara, CA, El Taco Tequila Taqueria is a trendy, casual Mexican eatery. & .574 & .388 & .547 & UNSUP \\
+negation & El Taco Tequila Taqueria is not a trendy, casual Mexican restaurant located at 14 E Cota St, Santa Barbara, CA. & .569 & .387 & .538 & UNSUP \\
+\midrule
+original & El Taco Tequila Taqueria is a trendy, casual Mexican restaurant located at 14 E Cota St, Santa Barbara, CA. & .574 & .389 & .542 & UNSUP \\
+paraphrase & Located at 14 E Cota St, Santa Barbara, CA, El Taco Tequila Taqueria is a trendy, casual Mexican eatery. & .574 & .388 & .547 & UNSUP \\
+entity & El Taco Tequila Taqueria is a trendy, casual Mexican restaurant located at 14 E Cota St, Fort Sill, CA. & .575 & .388 & .699 & UNSUP \\
+\midrule
+original & Kanye West has settled a lawsuit with paparazzo Daniel Ramos, who he assaulted at LAX in 2013. & .738 & .593 & .290 & SUP \\
+paraphrase & In 2013, Kanye West resolved a legal dispute with paparazzo Daniel Ramos after assaulting him at LAX. & .726 & .595 & .351 & SUP \\
+role swap & Daniel Ramos has settled a lawsuit with paparazzo Kanye West, who he assaulted at LAX in 2013. & .719 & .232 & .290 & SUP \\
+\midrule
+original & It is important to note that cleaning the dryer vent regularly can prevent dangerous house fires caused by clogged vents. & .624 & .413 & .127 & UNSUP \\
+paraphrase & Regular cleaning of the dryer vent is crucial to prevent hazardous house fires that can result from obstructed vents. & .621 & .428 & .136 & UNSUP \\
+causal & It is important to note that cleaning the dryer vent regularly can prevent dangerous house fires the cause of clogged vents. & .624 & .411 & .128 & UNSUP \\
+\bottomrule
+\end{tabular}

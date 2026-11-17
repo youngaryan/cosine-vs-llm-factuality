@@ -1,0 +1,79 @@
+\section{Problem Formulation}
+\label{sec:formulation}
+
+\paragraph{Two targets.}
+An example is $x=(q,E,a)$ or $x=(q,R,a)$: an optional question $q$, a generated answer $a$, and either evidence $E$ (retrieved passages, an article, a structured record) or a set of reference answers $R$. \emph{Evidence-grounded faithfulness} asks whether every claim in $a$ is supported by $E$; \emph{reference-based correctness} asks whether $a$ gives the same answer as some $r\in R$. An answer can be faithful to wrong evidence, or correct but unsupported by what was retrieved, so the two are evaluated on different datasets and never pooled.
+
+\paragraph{Labels, scores and decisions.}
+The label is $y\in\{0,1\}$ with $y=1$ (\emph{unsupported}) the positive class. Every evaluator is oriented as a support score $s(x)\in\mathbb{R}$; the answer is accepted iff $s(x)\ge\tau$. The false-acceptance rate is $\mathrm{FAR}(\tau)=\Pr[s\ge\tau\mid y=1]$ and the false-rejection rate is $\mathrm{FRR}(\tau)=\Pr[s<\tau\mid y=0]$. Thresholds are fitted on a calibration split $\mathcal{D}_\mathrm{cal}$ that shares no source document or question with the test split. Two operating points are used: $\tau^\mathrm{bal}$, which maximises balanced accuracy on $\mathcal{D}_\mathrm{cal}$, and $\tau^{\alpha}$, the lowest threshold whose calibration FAR is at most $\alpha$.
+
+\paragraph{Selective evaluation.}
+A cascade has a cheap score $s$, thresholds $\tau_\mathrm{rej}\le\tau_\mathrm{acc}$ and an expensive judge $J$. It accepts if $s\ge\tau_\mathrm{acc}$, rejects if $s<\tau_\mathrm{rej}$ and otherwise returns $J(x)$. With per-example costs $c_s\ll c_J$ and escalation share $\pi$, the expected cost is $c_s+\pi c_J$. We set $\tau_\mathrm{acc}=\tau^{\alpha}$ and choose $\tau_\mathrm{rej}$ as the highest threshold with calibration $\mathrm{FRR}\le\beta$, i.e.\ we minimise $\pi$ subject to the cheap stage alone contributing at most $\alpha$ false acceptance and $\beta$ false rejection on $\mathcal{D}_\mathrm{cal}$. The \emph{resolved share} $1-\pi$ is the fraction of judge calls avoided. These constraints hold in expectation only for data exchangeable with $\mathcal{D}_\mathrm{cal}$; we make no out-of-distribution guarantee and instead measure what happens under shift.
+
+\paragraph{Counterfactual diagnostics.}
+For a faithful answer $a$ with a selected sentence $k^\ast$, let $a^{+}$ replace sentence $k^\ast$ by a meaning-preserving paraphrase and $a^{-}$ replace it by a version with one fact changed. With $\tau$ frozen from natural calibration data we report: the \emph{score-drop rate} $\Pr[s(a^{-})<s(a)]$; the \emph{paired detection rate} $\Pr[s(a)\ge\tau\wedge s(a^{-})<\tau]$; \emph{paraphrase acceptance} $\Pr[s(a^{+})\ge\tau]$; and the \emph{inversion rate} $\Pr[s(a^{-})\ge s(a^{+})]$, the probability that the evaluator considers the factual error at least as well supported as the harmless rewording of the same sentence. The inversion rate is threshold-free and holds the edit position, the evidence and the rest of the answer fixed.
+
+\paragraph{Research questions and hypotheses.}
+RQ1: how do lexical, embedding, BERTScore, NLI and LLM-judge evaluators compare on each target? RQ2: which factual edits does each evaluator miss? RQ3: do thresholds transfer across domains, generators and answer lengths? RQ4: can a cheap risk estimator reduce judge calls at a fixed false-acceptance budget? RQ5: what are the measured cost--reliability trade-offs? The following hypotheses and their tests were written to \texttt{PREREGISTRATION.md} before any evaluator was run on test data.
+\textbf{H1}: with thresholds from natural data, cosine accepts paraphrases but fails to reject single-fact flips, and its paired detection rate is below that of NLI and of the LLM judge.
+\textbf{H2}: detection differs by perturbation type.
+\textbf{H3}: a cosine threshold calibrated to $\mathrm{FAR}\le 5\%$ in one domain exceeds 5\% FAR in at least one other domain.
+\textbf{H4}: at the same cheap-stage budget, a feature-based risk score resolves more examples than cosine alone, with system balanced accuracy no more than two points below judging everything.
+
+\section{Methodology}
+\label{sec:method}
+
+\subsection{Evaluators}
+\label{sec:evaluators}
+
+\paragraph{Lexical.} Exact match, reference containment and token F1 (reference mode); TF--IDF cosine and \emph{token precision}, the share of answer tokens that occur in the evidence (evidence mode).
+
+\paragraph{Embedding cosine.} We use all-MiniLM-L6-v2 (primary) and bge-small-en-v1.5 with unit-normalised embeddings. Evidence is split into overlapping two-sentence chunks of at most 60 words; structured records are flattened to ``key: value.''\ lines. Three configurations are scored: \emph{document} (whole answer vs.\ whole evidence), \emph{mean-max} (for each answer sentence the maximum cosine to any chunk, averaged over sentences) and \emph{min-max} (the minimum over sentences). Mean-max with MiniLM was fixed as the primary cosine configuration in advance. In reference mode the score is the maximum cosine between the answer and any reference.
+
+\paragraph{BERTScore.} Precision of answer tokens against the evidence with roberta-base (layer 10, no IDF, no baseline rescaling), the evidence encoded in 384-token windows; F1 against the best reference in reference mode.
+
+\paragraph{NLI.} A SummaC-ZS-style scorer \citep{laban2022summac}: for each answer sentence the two evidence chunks with the highest MiniLM cosine are used as premises for DeBERTa-v3-base fine-tuned on MNLI, FEVER and ANLI; the sentence score is the maximum over premises of $P(\text{entail})-P(\text{contradict})$ and the answer score is the mean over sentences. It is a zero-shot baseline, not a tuned state-of-the-art detector.
+
+\paragraph{LLM judges.} Two open-weight models served locally by Ollama: \JudgeSmallModel\ (small) and \JudgeStrongModel\ (stronger). A fixed rubric (Appendix~\ref{app:prompts}) asks for one of \textsc{supported}, \textsc{unsupported} or \textsc{insufficient\_evidence}; output is constrained to a JSON schema, decoding uses temperature 0 and a fixed seed, and the context window is 6{,}144 tokens. Following the datasets, which label unsupported additions as hallucinations, \textsc{insufficient\_evidence} is mapped to the positive class and also counted separately; unparseable output after one retry is logged as a failure and scored as positive. Judge verdicts are never used as labels.
+
+\subsection{Risk estimator}
+\label{sec:risk}
+
+The proposed cheap stage is a standardised logistic regression that predicts $P(y=1)$ from 16 features available without any LLM call, in six groups: \emph{cosine} (the three MiniLM configurations); \emph{lexical grounding} (token precision, token F1, TF--IDF cosine, minimum per-sentence token precision, share of answer bigrams absent from the evidence); \emph{numbers} (count and share of answer numbers absent from the evidence); \emph{entities} (count and share of capitalised answer tokens absent from the evidence); \emph{negation} (share of answer sentences whose negation polarity differs from their best-matching chunk); and \emph{length} (answer tokens, answer sentences, evidence tokens). Three nested variants are reported: cosine only, cosine + number/entity/negation checks, and all groups. The model is fitted on the RAGTruth training split; its negated risk is the support score $s$. Isotonic regression on the calibration split is used only to report calibration error. A separate model with ten reference-mode features is fitted for EVOUNA-NQ. Logistic regression was chosen for interpretability; a gradient-boosted model on the same features is reported as a sensitivity check.
+
+\subsection{Cascade and controls}
+
+The cascade of Section~\ref{sec:formulation} is run with $\alpha\in\{0.05,0.10,0.20\}$ ($0.05$ primary) and $\beta=0.10$, with thresholds fitted per domain on calibration data. We compare (i) always judging, (ii) never judging, (iii) the cascade gated by cosine alone, (iv) the cascade gated by the risk estimator or by NLI, and (v) a \emph{random-escalation} control that sends the same number of randomly chosen examples to the judge and uses the cheap score's $\tau^\mathrm{bal}$ decision for the rest. The control separates the value of \emph{which} examples are escalated from the value of escalating \emph{some} \citep{dorosario2026jev}.
+
+\subsection{Counterfactual stress test}
+\label{sec:cf}
+
+Counterfactuals are built only from RAGTruth test responses that human annotators marked hallucination-free. Every rule in Table~\ref{tab:rules} is tried on every answer sentence that is grounded in the evidence (6--60 words, at least half of its content tokens found in the evidence). The sentence to which the most rule types apply becomes the \emph{matched locus} $k^\ast$: all edits applicable there, and the paraphrase, are placed in that sentence. A type that does not apply at $k^\ast$ is placed in another eligible sentence and is excluded from matched-locus statistics. Rules were developed by reading training-split examples only.
+
+\begin{table}[t]
+\centering\small
+\begin{tabular}{p{0.19\columnwidth}p{0.72\columnwidth}}
+\toprule
+Type & Edit \\
+\midrule
+Negation & negate the root verb (explicit subject required) \\
+Number & replace a number found in the evidence by one that is not \\
+Date & shift a year, month, weekday or temporal expression \\
+Entity & replace a named entity by another of the same type that is absent from the evidence \\
+Role swap & exchange two person entities around a non-symmetric verb \\
+Direction & antonym of a directional predicate (rose/fell, before/after, \ldots) \\
+Causal & reverse or alter a causal connective \\
+Addition & append one fluent sentence unrelated to the evidence \\
+\midrule
+Paraphrase & LLM rewording of sentence $k^\ast$, kept only if numbers, capitalised tokens and negation parity are unchanged \\
+\bottomrule
+\end{tabular}
+\caption{Perturbation rules. Unsupported addition and omission of a necessary qualifier are covered by the addition rule and by negation/hedge edits respectively; the remaining categories map one-to-one.}
+\label{tab:rules}
+\end{table}
+
+Automatic validity filters require that replaced values occur in the evidence and replacements do not, that hedged sentences are skipped for negation, direction and causal edits, and that the edited sentence does not appear verbatim in the evidence. Paraphrases are produced by a model that is not used as a judge (phi4-mini) and filtered by rule. This yields \NCfPairs\ original--flip pairs from \NCfBases\ responses and \NCfPara\ paraphrase controls (\CfParaKeptPct\% of \NCfParaAttempted\ attempts passed the filters). The labels of these pairs are \emph{rule-generated and rule-validated, not human-annotated}; a 160-pair audit sheet is released but has not been reviewed by a human, and Section~\ref{sec:limitations} discusses the consequences.
+
+\subsection{Statistics}
+
+Confidence intervals are 95\% percentile intervals from a cluster bootstrap that resamples source documents or questions (\NBoot\ resamples); differences between evaluators are computed on the same resampled examples. P-values for the preregistered contrasts are bootstrap or permutation p-values, bounded below by the resolution of the resampling, with Holm correction over the primary family. Effect sizes are absolute differences. Calibration is reported as Brier score and 10-bin expected calibration error.

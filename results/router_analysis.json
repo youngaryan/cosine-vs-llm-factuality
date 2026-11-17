@@ -1,0 +1,321 @@
+{
+ "calibration": {
+  "ragtruth_qa": {
+   "risk_cos": {
+    "ece": 0.18771854787418682,
+    "brier": 0.18589159383360784,
+    "base_rate": 0.18285714285714286
+   },
+   "risk_cos_checks": {
+    "ece": 0.14433374100316168,
+    "brier": 0.1580259890214991,
+    "base_rate": 0.18285714285714286
+   },
+   "risk_full": {
+    "ece": 0.11700160781894477,
+    "brier": 0.13341138024417518,
+    "base_rate": 0.18285714285714286
+   }
+  },
+  "ragtruth_summary": {
+   "risk_cos": {
+    "ece": 0.12390779120243556,
+    "brier": 0.19058820572677143,
+    "base_rate": 0.22666666666666666
+   },
+   "risk_cos_checks": {
+    "ece": 0.13853163122540396,
+    "brier": 0.19781018005149348,
+    "base_rate": 0.22666666666666666
+   },
+   "risk_full": {
+    "ece": 0.09442853030528213,
+    "brier": 0.1755583817781327,
+    "base_rate": 0.22666666666666666
+   }
+  },
+  "ragtruth_data2txt": {
+   "risk_cos": {
+    "ece": 0.028808331884761878,
+    "brier": 0.22309979936815733,
+    "base_rate": 0.6433333333333333
+   },
+   "risk_cos_checks": {
+    "ece": 0.04501077521774836,
+    "brier": 0.21043104117900865,
+    "base_rate": 0.6433333333333333
+   },
+   "risk_full": {
+    "ece": 0.047989955011097526,
+    "brier": 0.20775296135998125,
+    "base_rate": 0.6433333333333333
+   }
+  },
+  "faithbench": {
+   "risk_cos": {
+    "ece": 0.372895372766599,
+    "brier": 0.366820325172078,
+    "base_rate": 0.684
+   },
+   "risk_cos_checks": {
+    "ece": 0.33052725999253285,
+    "brier": 0.33936425563948525,
+    "base_rate": 0.684
+   },
+   "risk_full": {
+    "ece": 0.4167913354828577,
+    "brier": 0.3847412743391879,
+    "base_rate": 0.684
+   }
+  },
+  "halueval_qa": {
+   "risk_cos": {
+    "ece": 0.3485532242063306,
+    "brier": 0.36067500432730276,
+    "base_rate": 0.5
+   },
+   "risk_cos_checks": {
+    "ece": 0.30767231285470986,
+    "brier": 0.343801777659391,
+    "base_rate": 0.5
+   },
+   "risk_full": {
+    "ece": 0.4215080655624084,
+    "brier": 0.37302977879140775,
+    "base_rate": 0.5
+   }
+  }
+ },
+ "ablation": {
+  "full": {
+   "ragtruth_auroc": 0.8173597114021145,
+   "ragtruth_auroc_ci": [
+    0.8001091543370857,
+    0.8332405872946288
+   ],
+   "faithbench_auroc": 0.6365200977126361,
+   "halueval_qa_auroc": 0.976521,
+   "cf_score_drop_rate": 0.7944670463791701,
+   "cf_auroc_edit_vs_original": 0.6059837169523807
+  },
+  "minus_cosine": {
+   "ragtruth_auroc": 0.8177387042973754,
+   "ragtruth_auroc_ci": [
+    0.8002999841134799,
+    0.8338001631224797
+   ],
+   "faithbench_auroc": 0.643719002146717,
+   "halueval_qa_auroc": 0.9826125,
+   "cf_score_drop_rate": 0.7941415785191213,
+   "cf_auroc_edit_vs_original": 0.6120025659826013,
+   "auroc_loss_vs_full": -0.00037899289526088786,
+   "auroc_loss_ci": [
+    -0.0026308991336436967,
+    0.0018371597950893365
+   ]
+  },
+  "minus_lexical": {
+   "ragtruth_auroc": 0.793976645710829,
+   "ragtruth_auroc_ci": [
+    0.7748384660892244,
+    0.8124311792482342
+   ],
+   "faithbench_auroc": 0.5833055740617367,
+   "halueval_qa_auroc": 0.693314,
+   "cf_score_drop_rate": 0.897640358014646,
+   "cf_auroc_edit_vs_original": 0.6388933020023139,
+   "auroc_loss_vs_full": 0.023383065691285454,
+   "auroc_loss_ci": [
+    0.01418044970178535,
+    0.03328324368319819
+   ]
+  },
+  "minus_number": {
+   "ragtruth_auroc": 0.811939929319968,
+   "ragtruth_auroc_ci": [
+    0.7952473058157832,
+    0.8281277315607991
+   ],
+   "faithbench_auroc": 0.6327263305944185,
+   "halueval_qa_auroc": 0.975997,
+   "cf_score_drop_rate": 0.7931651749389748,
+   "cf_auroc_edit_vs_original": 0.5924032111255513,
+   "auroc_loss_vs_full": 0.0054197820821465514,
+   "auroc_loss_ci": [
+    0.0021398088101405393,
+    0.008506569133978773
+   ]
+  },
+  "minus_entity": {
+   "ragtruth_auroc": 0.8098061809516579,
+   "ragtruth_auroc_ci": [
+    0.7931929510487105,
+    0.8257711005757729
+   ],
+   "faithbench_auroc": 0.6328373676808053,
+   "halueval_qa_auroc": 0.973958,
+   "cf_score_drop_rate": 0.7895850284784377,
+   "cf_auroc_edit_vs_original": 0.5727224893034891,
+   "auroc_loss_vs_full": 0.0075535304504565914,
+   "auroc_loss_ci": [
+    0.003080729479808861,
+    0.011972498455769465
+   ]
+  },
+  "minus_negation": {
+   "ragtruth_auroc": 0.816149260749561,
+   "ragtruth_auroc_ci": [
+    0.7987138455489174,
+    0.8319588140876895
+   ],
+   "faithbench_auroc": 0.6415352727811089,
+   "halueval_qa_auroc": 0.977814,
+   "cf_score_drop_rate": 0.9310008136696502,
+   "cf_auroc_edit_vs_original": 0.6076357291622528,
+   "auroc_loss_vs_full": 0.0012104506525535408,
+   "auroc_loss_ci": [
+    0.00024726462524385097,
+    0.0021539319468916866
+   ]
+  },
+  "minus_length": {
+   "ragtruth_auroc": 0.8075401830431599,
+   "ragtruth_auroc_ci": [
+    0.789546809841659,
+    0.8244605135951876
+   ],
+   "faithbench_auroc": 0.6438485454141684,
+   "halueval_qa_auroc": 0.965252,
+   "cf_score_drop_rate": 0.7672904800650936,
+   "cf_auroc_edit_vs_original": 0.6073954364771805,
+   "auroc_loss_vs_full": 0.00981952835895461,
+   "auroc_loss_ci": [
+    0.0048286116074960275,
+    0.015194500622899506
+   ]
+  },
+  "only_cosine": {
+   "ragtruth_auroc": 0.7455947433256841,
+   "ragtruth_auroc_ci": [
+    0.7247717463846468,
+    0.7648509469629494
+   ],
+   "faithbench_auroc": 0.5346898364053594,
+   "halueval_qa_auroc": 0.24357,
+   "cf_score_drop_rate": 0.8340113913751017,
+   "cf_auroc_edit_vs_original": 0.5795603180230777
+  },
+  "only_lexical": {
+   "ragtruth_auroc": 0.7890344314126945,
+   "ragtruth_auroc_ci": [
+    0.7699129699304492,
+    0.8071215830174847
+   ],
+   "faithbench_auroc": 0.6367791842475387,
+   "halueval_qa_auroc": 0.97312,
+   "cf_score_drop_rate": 0.8860862489829129,
+   "cf_auroc_edit_vs_original": 0.5512991627838122
+  },
+  "only_number": {
+   "ragtruth_auroc": 0.5650585081762054,
+   "ragtruth_auroc_ci": [
+    0.5456362463305982,
+    0.585961408716815
+   ],
+   "faithbench_auroc": 0.5039233103856688,
+   "halueval_qa_auroc": 0.5605,
+   "cf_score_drop_rate": 0.222620016273393,
+   "cf_auroc_edit_vs_original": 0.5972531006070072
+  },
+  "only_entity": {
+   "ragtruth_auroc": 0.6634980860552656,
+   "ragtruth_auroc_ci": [
+    0.640057863276447,
+    0.6860802752657543
+   ],
+   "faithbench_auroc": 0.5810478199718706,
+   "halueval_qa_auroc": 0.7190275,
+   "cf_score_drop_rate": 0.3930024410089504,
+   "cf_auroc_edit_vs_original": 0.6523184221352473
+  },
+  "only_negation": {
+   "ragtruth_auroc": 0.546649188502127,
+   "ragtruth_auroc_ci": [
+    0.5201916053850933,
+    0.5728842236735002
+   ],
+   "faithbench_auroc": 0.579548819305648,
+   "halueval_qa_auroc": 0.5333995,
+   "cf_score_drop_rate": 0.2647681041497152,
+   "cf_auroc_edit_vs_original": 0.562829135273518
+  },
+  "only_length": {
+   "ragtruth_auroc": 0.6608181960672905,
+   "ragtruth_auroc_ci": [
+    0.6372599924563417,
+    0.6842338029148528
+   ],
+   "faithbench_auroc": 0.5969261233251906,
+   "halueval_qa_auroc": 0.975254,
+   "cf_score_drop_rate": 0.47762408462164363,
+   "cf_auroc_edit_vs_original": 0.5548480390132338
+  }
+ },
+ "coefficients": {
+  "risk_cos": {
+   "minilm_mm": -0.3511,
+   "minilm_min": -0.124,
+   "minilm_doc": -0.4097
+  },
+  "risk_cos_checks": {
+   "minilm_mm": -0.3055,
+   "minilm_min": -0.0543,
+   "minilm_doc": -0.3851,
+   "chk_num_ratio": -0.0164,
+   "log_num_unsup": 0.2133,
+   "chk_ent_ratio": -0.1008,
+   "log_ent_unsup": 0.5757,
+   "chk_neg_mismatch": -0.0263
+  },
+  "risk_full": {
+   "minilm_mm": -0.0966,
+   "minilm_min": -0.0279,
+   "minilm_doc": 0.2208,
+   "lex_tok_prec": -0.5442,
+   "lex_f1": -0.1312,
+   "lex_tfidf": -0.3722,
+   "chk_min_sent_prec": 0.0166,
+   "chk_novel_bigram": 0.1829,
+   "chk_num_ratio": 0.0026,
+   "log_num_unsup": 0.2351,
+   "chk_ent_ratio": 0.0064,
+   "log_ent_unsup": 0.2863,
+   "chk_neg_mismatch": -0.0651,
+   "log_len_ans": 0.5535,
+   "len_ans_sent": -0.0362,
+   "log_len_ev": -0.143
+  }
+ },
+ "gbm_check": {
+  "ragtruth_qa": {
+   "gbm_auroc": 0.7844842657342658,
+   "lr_auroc": 0.808208041958042
+  },
+  "ragtruth_summary": {
+   "gbm_auroc": 0.6704558260085643,
+   "lr_auroc": 0.6733153031327473
+  },
+  "ragtruth_data2txt": {
+   "gbm_auroc": 0.7318343475430299,
+   "lr_auroc": 0.703237400394923
+  },
+  "faithbench": {
+   "gbm_auroc": 0.6264897475756903,
+   "lr_auroc": 0.6365200977126361
+  },
+  "halueval_qa": {
+   "gbm_auroc": 0.9095725,
+   "lr_auroc": 0.976521
+  }
+ }
+}

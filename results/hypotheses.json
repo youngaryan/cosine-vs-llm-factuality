@@ -1,0 +1,212 @@
+{
+ "H1": {
+  "cosine_paired_detection": 0.11977217249796583,
+  "cosine_ci": [
+   0.11012277617692721,
+   0.12977973311877838
+  ],
+  "nli_paired_detection": 0.183726606997559,
+  "nli_ci": [
+   0.16717725175019496,
+   0.20056263456170617
+  ],
+  "judge_small_paired_detection": 0.10702341137123746,
+  "judge_minus_cosine": {
+   "paired_detection": 0.08695652173913043,
+   "flip_rejection": 0.6187290969899666,
+   "judge_minus_scorer": 0.020066889632107024,
+   "ci": [
+    -0.04703687117480219,
+    0.0915564817476286
+   ],
+   "p_boot": 0.615
+  },
+  "cosine_paraphrase_acceptance": {
+   "n": 193,
+   "acceptance": 0.5595854922279793,
+   "acceptance_ci": [
+    0.4892443899018233,
+    0.6324460897067279
+   ],
+   "original_acceptance": 0.5647668393782384,
+   "false_rejection_given_original_accepted": 0.01834862385321101,
+   "delta_sd": 0.03757877526924391
+  },
+  "cosine_inversion": {
+   "n": 476,
+   "rate": 0.36554621848739494,
+   "ci": [
+    0.3096723259762309,
+    0.42316862531393634
+   ],
+   "by_type": {
+    "causal": {
+     "n": 15,
+     "rate": 0.6666666666666666
+    },
+    "date": {
+     "n": 51,
+     "rate": 0.6470588235294118
+    },
+    "direction": {
+     "n": 33,
+     "rate": 0.42424242424242425
+    },
+    "entity": {
+     "n": 122,
+     "rate": 0.22131147540983606
+    },
+    "negation": {
+     "n": 175,
+     "rate": 0.3028571428571429
+    },
+    "number": {
+     "n": 70,
+     "rate": 0.4857142857142857
+    },
+    "role_swap": {
+     "n": 10,
+     "rate": 0.3
+    }
+   }
+  }
+ },
+ "H2": {
+  "minilm_mm": {
+   "chi2": 590.2078126081385,
+   "dof": 7,
+   "p": 3.126405711345888e-123,
+   "cramers_v": 0.30991424116492766,
+   "p_perm_within_base": 0.0004997501249375312,
+   "rejection_range": [
+    0.34065934065934067,
+    0.7923533289386948
+   ]
+  },
+  "bge_small_mm": {
+   "chi2": 453.20883305621896,
+   "dof": 7,
+   "p": 9.085389961503467e-94,
+   "cramers_v": 0.27157403138926095,
+   "p_perm_within_base": 0.0004997501249375312,
+   "rejection_range": [
+    0.4175824175824176,
+    0.8160843770599868
+   ]
+  },
+  "bertscore": {
+   "chi2": 301.51485093497564,
+   "dof": 7,
+   "p": 2.8722095009165845e-61,
+   "cramers_v": 0.2215100373648399,
+   "p_perm_within_base": 0.0004997501249375312,
+   "rejection_range": [
+    0.336996336996337,
+    0.6222808174027686
+   ]
+  },
+  "nli_mean_ec": {
+   "chi2": 88.87712854521087,
+   "dof": 7,
+   "p": 2.1035804306397817e-16,
+   "cramers_v": 0.1202635623015003,
+   "p_perm_within_base": 0.0004997501249375312,
+   "rejection_range": [
+    0.5018315018315018,
+    0.8333333333333334
+   ]
+  },
+  "risk_full": {
+   "chi2": 846.8474831481443,
+   "dof": 7,
+   "p": 1.436590589581278e-178,
+   "cramers_v": 0.3712287961136338,
+   "p_perm_within_base": 0.0004997501249375312,
+   "rejection_range": [
+    0.3498603351955307,
+    0.8424522083058669
+   ]
+  }
+ },
+ "H3": {
+  "offdiag_cells": 20,
+  "offdiag_far_exceeds_alpha_ci": 7,
+  "offdiag_far_max": 0.5409356725146199,
+  "p_bonferroni": 0.01,
+  "offdiag_exceed_cells": [
+   "ragtruth_summary->faithbench",
+   "ragtruth_summary->halueval_qa",
+   "ragtruth_data2txt->ragtruth_qa",
+   "ragtruth_data2txt->ragtruth_summary",
+   "ragtruth_data2txt->faithbench",
+   "ragtruth_data2txt->halueval_qa",
+   "halueval_qa->faithbench"
+  ],
+  "offdiag_far_median": 0.049,
+  "diag_far_exceeds_alpha_ci": 1,
+  "diag_far_max": 0.10818713450292397,
+  "mean_bacc_drop_offdiag": 0.05355851848705737
+ },
+ "H1_nli_minus_cosine_all_pairs": {
+  "diff": 0.06395443449959316,
+  "ci": [
+   0.04629921630102615,
+   0.08194420874724333
+  ],
+  "p_boot": 0.0
+ },
+ "H4": {
+  "coverage_diff": {
+   "diff": 0.09009345794392523,
+   "ci": [
+    0.06387687846822838,
+    0.11477280510394522
+   ],
+   "p_boot": 0.0
+  },
+  "system": {
+   "balanced_accuracy": 0.635044088425236,
+   "bacc_ci": [
+    0.6009808693345099,
+    0.6709728088306427
+   ],
+   "far": 0.07650273224043713,
+   "far_ci": [
+    0.04166666666666663,
+    0.11981195037688427
+   ],
+   "frr": 0.6534090909090908,
+   "escalation": 0.6448598130841121,
+   "escalation_ci": [
+    0.5906434895650341,
+    0.6970260223048327
+   ],
+   "bacc_minus_always_judge": 0.06937717337307503,
+   "bacc_minus_always_judge_ci": [
+    0.03929030747048626,
+    0.1010662083438515
+   ],
+   "accuracy": 0.5439252336448598,
+   "macro_f1": 0.5403780068728523,
+   "judge_seconds_per_1000": 4980.442052524293,
+   "random_escalation": {
+    "balanced_accuracy": 0.5894133703841695,
+    "bacc_sd": 0.014552278007438054,
+    "far": 0.13883424408014572
+   }
+  }
+ },
+ "holm_adjusted_p": {
+  "H1_nli_vs_cosine": 0.002,
+  "H4_coverage": 0.002,
+  "H3_transfer": 0.02,
+  "H1_judge_vs_cosine": 0.615
+ },
+ "raw_p": {
+  "H1_judge_vs_cosine": 0.615,
+  "H3_transfer": 0.01,
+  "H1_nli_vs_cosine": 0.0005,
+  "H4_coverage": 0.0005
+ },
+ "note": "Bootstrap p-values are bounded below by 1/n_boot; H3 is assessed by confidence intervals of achieved FAR per transfer cell rather than by a single p-value."
+}

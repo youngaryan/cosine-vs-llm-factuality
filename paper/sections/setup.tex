@@ -1,0 +1,25 @@
+\section{Experimental Setup}
+\label{sec:setup}
+
+\paragraph{Datasets.}
+Table~\ref{tab:datasets} lists the data. \emph{RAGTruth} \citep{niu2024ragtruth} contains responses of six LLMs to question answering (QA), summarisation (Sum) and data-to-text (D2T) prompts with human span-level hallucination annotations; a response is positive if it has at least one annotated span. Responses flagged as incorrect refusals (\NExclRefusal) or truncated (\NExclTrunc) are excluded. \emph{FaithBench} \citep{bao2025faithbench} contains summaries on which existing detectors disagreed, with human labels; a summary is positive if its worst annotator label is ``unwanted'' or ``questionable'', and a sensitivity analysis uses the best label. \emph{EVOUNA-NQ} \citep{wang2023evaluating} contains answers of five open-domain QA systems to Natural Questions with human correctness judgements; \NExclImproper\ questions flagged as improper are excluded. \emph{HaluEval-QA} \citep{li2023halueval} pairs each gold answer with an LLM-written hallucinated answer; its labels are synthetic and it is used only as an out-of-domain target. FactBench \citep{bayat2025factbench} was considered and not used because we could not confirm within the study's time budget that its public release contains per-response human labels with evidence.
+
+\begin{table}[t]
+\centering\small
+\setlength{\tabcolsep}{3pt}
+\resizebox{\columnwidth}{!}{\input{generated/tab_datasets}}
+\caption{Examples per split after exclusions. ``Groups'' are source documents (RAGTruth, FaithBench), questions (EVOUNA) or items (HaluEval); a group never crosses splits. The first five domains measure evidence-grounded faithfulness; EVOUNA-NQ measures reference-based correctness.}
+\label{tab:datasets}
+\end{table}
+
+\paragraph{Splits.}
+The official RAGTruth test split is used in full. From its official training split we sample 200 sources per task for fitting the risk estimator and 100 per task for calibration. FaithBench, EVOUNA-NQ and HaluEval-QA are split by group with a fixed seed. All answers generated for one source stay in one split, which prevents the evidence, and the six model outputs written from it, from appearing on both sides. The natural test sets contain \NTestNatural\ labelled examples (\NTestFaith\ faithfulness, \NTestEvouna\ correctness).
+
+\paragraph{Scale of the LLM-judge experiments.}
+All experiments ran on one CPU-only laptop (Section~\ref{sec:cost}). Lexical, embedding, BERTScore, NLI and risk-model evaluators were run on every example. The LLM judges were run on source-clustered random subsets fixed in advance, and these parts of the study are a \emph{reduced-scale pilot}: the small judge on 30 sources per RAGTruth task, all FaithBench test sources, 600 EVOUNA-NQ answers and 81 counterfactual bases; the stronger judge on nested subsets of 6 sources per task, 10 FaithBench sources, 150 EVOUNA-NQ answers and 21 counterfactual bases. Every judge comparison is made against cheap evaluators on exactly the same examples. Prompt sensitivity is assessed by re-running the small judge with a reworded rubric on 10 sources per RAGTruth task.
+
+\paragraph{Cost measurement.}
+No paid API was used, so no monetary cost is reported. We report wall-clock seconds per 1{,}000 evaluations, process CPU seconds, cold-start (model load) time, prompt and output tokens, and median and 95th-percentile latency, measured in a separate single-process benchmark on a fixed RAGTruth sample with no other job running. For embedding methods we report both the cost of encoding evidence and answer and the cost when evidence embeddings are cached; for judges we report a new source and a second answer for the same source, for which the server reuses the cached prompt prefix.
+
+\paragraph{Reproducibility.}
+Seeds, model identifiers and digests, thresholds and all prompts are fixed in the configuration and released with the code at \CodeURL; every number and table in this paper is generated from saved result files by script. Departures from the preregistered plan are listed in Appendix~\ref{app:deviations}.

@@ -1,0 +1,126 @@
+\section{Judge Prompts}
+\label{app:prompts}
+
+The system message is one of the rubrics below, reproduced verbatim from \texttt{src/run\_judge.py}. In evidence mode the user message is ``\texttt{EVIDENCE:} \emph{evidence}'', then ``\texttt{QUESTION:} \emph{question}'' when one exists, then ``\texttt{ANSWER:} \emph{answer}'' (``\texttt{SOURCE}''/``\texttt{RESPONSE}'' for the v2 variant). In reference mode it is the question, a bulleted list of reference answers and the candidate answer. Placing the evidence before the answer lets consecutive calls for one source share a prompt prefix. Output is constrained to the JSON schema \texttt{\{"verdict": enum\}}. Options: temperature 0, seed \Seed, context 6{,}144 tokens, at most 24 output tokens. The probability of \textsc{supported} is read from the token distribution at the first token of the verdict string and is used only for the judges' AUC and score-drop statistics.
+
+\input{generated/prompts}
+
+\section{Configuration}
+\label{app:config}
+
+\begin{itemize}\setlength{\itemsep}{0pt}
+\item Seed \Seed\ for all sampling and decoding; \NBoot\ bootstrap resamples.
+\item Embedders: \nolinkurl{sentence-transformers/all-MiniLM-L6-v2}, \nolinkurl{BAAI/bge-small-en-v1.5}; unit-normalised; at most 40 answer sentences and 400 evidence chunks per example.
+\item BERTScore: \nolinkurl{FacebookAI/roberta-base}, layer 10, no IDF, no rescaling.
+\item NLI: \nolinkurl{MoritzLaurer/DeBERTa-v3-base-mnli-fever-anli}, two retrieved chunks per answer sentence, maximum 320 tokens per pair.
+\item Judges: Ollama tags \texttt{\JudgeSmallModel} and \texttt{\JudgeStrongModel}; model digests are recorded in \texttt{configs/experiment.yaml}.
+\item Paraphraser: Ollama tag \texttt{phi4-mini:3.8b}; kept if numbers, capitalised tokens and negation parity are unchanged, the length ratio is in $[0.6,1.7]$ and token Jaccard similarity to the original sentence is at most $0.9$.
+\item Risk estimator: \texttt{StandardScaler} + \texttt{LogisticRegression(C=1.0)}; isotonic calibration on the calibration split.
+\item Cascade: $\alpha\in\{0.05,0.10,0.20\}$, $\beta=0.10$, thresholds per domain.
+\end{itemize}
+
+\section{Data Processing}
+\label{app:data}
+
+Sources and licences: RAGTruth (MIT), FaithBench (CC BY-NC-SA 4.0), EVOUNA from the QA-Eval repository (Apache-2.0), HaluEval (MIT), each downloaded from the authors' public repository; \texttt{data/README.md} gives the exact files and commands. RAGTruth evidence is the retrieved passages (QA), the article (Sum) or the JSON record flattened to ``key: value.''\ lines (D2T). EVOUNA gold answers are split on ``/'' into alternative references. Sentences are split with a regular expression that protects common abbreviations. Evidence chunks are windows of two consecutive sentences with stride one; sentences longer than 60 words are windowed. No example was removed on the basis of any evaluator's output.
+
+\section{Departures from the Preregistered Plan}
+\label{app:deviations}
+
+\begin{enumerate}\setlength{\itemsep}{0pt}
+\item \textbf{Third embedder dropped.} The plan named bge-base-en-v1.5. It could not be downloaded for lack of disk space, and the substitute (nomic-embed-text served by Ollama) encoded about six texts per second, too slow for \NTestNatural\ test examples plus counterfactuals. Two embedders are reported.
+\item \textbf{Paraphrase model and count.} The paraphraser was changed from gemma3:4b to phi4-mini:3.8b and the number of bases from 450 to 240 for memory and time reasons, before any paraphrase was scored.
+\item \textbf{Sentence splitter fix.} A bug that split sentences after abbreviations such as ``Dr.''\ was found while reading training-split counterfactuals. It was fixed and the counterfactual set was rebuilt before any evaluator was run on it.
+\item \textbf{H2 test.} The permutation test shuffles outcomes among the pairs of one base response; a chi-square statistic and Cram\'er's $V$ are reported alongside it.
+\item \textbf{H3 p-value.} The plan specified a confidence-interval criterion. To include H3 in the Holm family we additionally report a Bonferroni-adjusted one-sided bootstrap p-value over the 20 off-diagonal cells.
+\item \textbf{Crash recovery and numeric precision.} The first embedding and BERTScore runs ran out of memory because the disk was full and an LLM was loaded at the same time; both were re-run alone, with BERTScore restructured to encode one evidence text at a time. The first NLI run loaded the checkpoint in its stored 16-bit precision, which was about thirteen times slower on this CPU; it was stopped before writing any score and re-run in 32-bit precision. None of these changes alters a score definition.
+\item \textbf{Cost benchmark re-run.} The first clean benchmark crashed while summarising the judge rows because one judge call had returned no verdict; it saved nothing. The summary was changed to use successful calls and record failures, and the whole benchmark was re-run alone; all 120 judge calls in the reported run succeeded.
+\item \textbf{Judge for H4.} The plan does not name the judge for H4. The confirmatory test uses the small judge, which has the larger subset; the 14B-judge cascade is reported as exploratory.
+\item \textbf{No human audit.} The released 160-pair audit sheet has not been reviewed; no human validation of counterfactual labels is claimed.
+\end{enumerate}
+
+\section{Reproduction}
+\label{app:repro}
+
+{\footnotesize\ttfamily\raggedright\setlength{\parskip}{1pt}
+\par\hangindent=1.5em\hangafter=1 pip install -r requirements.txt
+\par\hangindent=1.5em\hangafter=1 python src/prepare\_data.py
+\par\hangindent=1.5em\hangafter=1 python src/build\_counterfactuals.py -{}-split test
+\par\hangindent=1.5em\hangafter=1 python src/build\_counterfactuals.py -{}-split test -{}-paraphrase
+\par\hangindent=1.5em\hangafter=1 python src/score\_cheap.py -{}-skip-nomic
+\par\hangindent=1.5em\hangafter=1 python src/run\_nli.py
+\par\hangindent=1.5em\hangafter=1 python src/run\_bertscore.py
+\par\hangindent=1.5em\hangafter=1 python src/run\_judge.py -{}-select
+\par\hangindent=1.5em\hangafter=1 python src/run\_judge.py -{}-judge small -{}-part natural
+\par\hangindent=1.5em\hangafter=1 python src/run\_judge.py -{}-judge small -{}-part cf
+\par\hangindent=1.5em\hangafter=1 python src/run\_judge.py -{}-judge small -{}-part sensitivity -{}-prompt v2
+\par\hangindent=1.5em\hangafter=1 python src/run\_judge.py -{}-judge strong -{}-part natural
+\par\hangindent=1.5em\hangafter=1 python src/run\_judge.py -{}-judge strong -{}-part cf
+\par\hangindent=1.5em\hangafter=1 python src/analyze.py
+\par\hangindent=1.5em\hangafter=1 python src/cost\_benchmark.py -{}-strong
+\par\hangindent=1.5em\hangafter=1 python src/make\_tables.py
+\par\hangindent=1.5em\hangafter=1 python src/make\_figures.py
+\par\hangindent=1.5em\hangafter=1 python src/lint\_paper.py\par}
+\noindent Dataset download commands are in \texttt{data/README.md}; \texttt{README.md} gives a single command that runs the whole sequence. The judge scripts are resume-safe and require a local Ollama server with the two judge models and the paraphrase model pulled.
+
+\section{Additional Results}
+\label{app:more}
+
+\begin{table*}[t]
+\centering\small
+\resizebox{\textwidth}{!}{\input{generated/tab_cf_detect}}
+\caption{Paired detection rate (\%, original accepted and flip rejected at $\tau^\mathrm{bal}$) by perturbation type, all \NCfPairs\ pairs. ``Orig.\ acc.''\ is the share of unedited faithful answers accepted; ``Para.\ acc.''\ the share of paraphrases accepted.}
+\label{tab:cfdetect}
+\end{table*}
+
+\begin{table*}[t]
+\centering\small
+\resizebox{\textwidth}{!}{\input{generated/tab_cf_judge}}
+\caption{LLM judges on counterfactual pairs: paired detection rate (\%) by perturbation type, with cheap evaluators on exactly the same pairs. ``Orig.\ acc.''\ is averaged over pairs; the text reports it over distinct originals. The 14B rows are an exploratory, smaller sample.}
+\label{tab:cfjudge}
+\end{table*}
+
+\begin{table*}[t]
+\centering\small
+\resizebox{\textwidth}{!}{\input{generated/tab_cascade_strong}}
+\caption{System results with the 14B judge on its RAGTruth subset ($n=\SysStrongN$); columns as in Table~\ref{tab:cascadesmall}.}
+\label{tab:cascadestrong}
+\end{table*}
+
+\begin{table*}[t]
+\centering\small
+\input{generated/tab_transfer_cos}
+
+\vspace{4pt}
+\input{generated/tab_transfer_risk}
+\caption{False-acceptance rate (\%) on the test split of the column domain when the acceptance threshold is calibrated to $\mathrm{FAR}\le5\%$ on the row domain; in parentheses the share of all test answers accepted (\%). Top: MiniLM mean-max cosine. Bottom: full risk model. Bold: the lower 95\% bound exceeds 5\%.}
+\label{tab:transfermatrix}
+\end{table*}
+
+\begin{table*}[t]
+\centering\small
+\input{generated/tab_shift}
+\caption{Shift inside RAGTruth at $\alpha=0.05$: thresholds calibrated on one generator family (OpenAI vs.\ open-weight models) or one answer-length half and tested on each.}
+\label{tab:shift}
+\end{table*}
+
+\begin{table*}[t]
+\centering\small
+\input{generated/tab_cheapstage}
+\caption{Cheap stage alone on the full RAGTruth test set (\NTestRagtruth\ examples): share resolved without a judge call and the error it contributes.}
+\label{tab:cheapstage}
+\end{table*}
+
+\begin{table}[t]
+\centering\small
+\input{generated/tab_coef}
+\caption{Coefficients of the full risk model (positive = raises predicted risk).}
+\label{tab:coef}
+\end{table}
+
+\begin{table*}[t]
+\centering\small
+\resizebox{\textwidth}{!}{\input{generated/tab_examples}}
+\caption{Matched-locus triplets with evaluator outputs, selected mechanically (first eligible base per type in identifier order), not by outcome. MiniLM and NLI are support scores (higher = more supported); ``Risk'' is the full model's predicted risk. Edits are rule-generated and were not verified by a human.}
+\label{tab:examples}
+\end{table*}

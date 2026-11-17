@@ -1,0 +1,46 @@
+\ifx\XeTeXrevision\undefined
+\pdfoutput=1 % arXiv: compile with pdfLaTeX (guarded so XeTeX-based Tectonic also works)
+\fi
+% When Is Cosine Similarity Enough?  --  manuscript source.
+% Every number below is a macro defined in generated/numbers.tex, and every table body is a file in generated/,
+% both written by src/make_tables.py from results/*.json. Figures are written by src/make_figures.py.
+\documentclass[11pt]{article}
+\usepackage[preprint]{acl}
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{makecell}
+\newcommand{\yes}{\checkmark}
+\newcommand{\CodeURL}{\url{https://github.com/youngaryan/cosine-vs-llm-factuality}}
+\input{generated/numbers}
+
+\title{When Is Cosine Similarity Enough? Counterfactual Robustness and Cost-Aware Evaluation of LLM Factuality}
+
+\author{Aryan Golbaghi \\
+  Independent Researcher \\
+  \texttt{aryangolbaghi@gmail.com}}
+
+\date{November 2026}
+
+\begin{document}
+\maketitle
+
+\input{sections/abstract}
+\input{sections/intro}
+\input{sections/related}
+\input{sections/method}
+\input{sections/setup}
+\input{sections/results}
+\input{sections/discussion}
+
+\bibliography{references}
+
+\appendix
+\input{sections/appendix}
+
+\end{document}

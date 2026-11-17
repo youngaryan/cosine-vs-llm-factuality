@@ -1,0 +1,8 @@
+{
+ "model": "MoritzLaurer/DeBERTa-v3-base-mnli-fever-anli",
+ "load_s": 2.690569999977015,
+ "pairs": 103900,
+ "tokens": 6725158,
+ "seconds": 11531.895785500063,
+ "threads": 6
+}

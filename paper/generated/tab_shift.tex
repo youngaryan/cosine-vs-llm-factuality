@@ -1,0 +1,31 @@
+\begin{tabular}{lllrrr}
+\toprule
+Shift & Method & Calibrated $\rightarrow$ tested & FAR [95\% CI] & FRR & AUC \\
+\midrule
+Generator & MiniLM & open\_weight $\rightarrow$ open\_weight & 3.6 [2.4, 5.1] & 84.4 & .622 \\
+Generator & MiniLM & open\_weight $\rightarrow$ openai & 3.4 [0.0, 7.7] & 69.7 & .804 \\
+Generator & MiniLM & openai $\rightarrow$ open\_weight & 1.6 [0.8, 2.7] & 92.2 & .622 \\
+Generator & MiniLM & openai $\rightarrow$ openai & 1.1 [0.0, 3.9] & 85.4 & .804 \\
+Generator & NLI & open\_weight $\rightarrow$ open\_weight & 5.0 [3.6, 6.7] & 82.1 & .720 \\
+Generator & NLI & open\_weight $\rightarrow$ openai & 5.7 [1.0, 12.1] & 64.0 & .734 \\
+Generator & NLI & openai $\rightarrow$ open\_weight & 0.8 [0.2, 1.6] & 94.2 & .720 \\
+Generator & NLI & openai $\rightarrow$ openai & 1.1 [0.0, 3.8] & 86.1 & .734 \\
+Generator & Risk (full) & open\_weight $\rightarrow$ open\_weight & 4.2 [2.8, 5.7] & 74.5 & .807 \\
+Generator & Risk (full) & open\_weight $\rightarrow$ openai & 4.5 [1.0, 9.7] & 53.9 & .842 \\
+Generator & Risk (full) & openai $\rightarrow$ open\_weight & 1.1 [0.4, 1.8] & 94.5 & .807 \\
+Generator & Risk (full) & openai $\rightarrow$ openai & 0.0 [0.0, 0.0] & 80.3 & .842 \\
+\midrule
+Length & MiniLM & long $\rightarrow$ long & 4.9 [2.9, 7.4] & 80.0 & .681 \\
+Length & MiniLM & long $\rightarrow$ short & 12.4 [8.9, 16.3] & 58.3 & .689 \\
+Length & MiniLM & short $\rightarrow$ long & 0.9 [0.2, 1.7] & 95.4 & .681 \\
+Length & MiniLM & short $\rightarrow$ short & 2.5 [0.9, 4.2] & 86.9 & .689 \\
+Length & NLI & long $\rightarrow$ long & 5.8 [3.8, 8.2] & 75.9 & .734 \\
+Length & NLI & long $\rightarrow$ short & 17.1 [13.2, 21.4] & 52.4 & .728 \\
+Length & NLI & short $\rightarrow$ long & 1.0 [0.2, 2.1] & 93.4 & .734 \\
+Length & NLI & short $\rightarrow$ short & 3.4 [1.6, 5.5] & 79.7 & .728 \\
+Length & Risk (full) & long $\rightarrow$ long & 4.6 [2.8, 6.8] & 70.1 & .796 \\
+Length & Risk (full) & long $\rightarrow$ short & 23.0 [18.1, 28.4] & 34.4 & .801 \\
+Length & Risk (full) & short $\rightarrow$ long & 0.7 [0.2, 1.4] & 95.1 & .796 \\
+Length & Risk (full) & short $\rightarrow$ short & 3.4 [1.7, 5.4] & 73.6 & .801 \\
+\bottomrule
+\end{tabular}

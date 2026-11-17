@@ -1,0 +1,21 @@
+\begin{tabular}{lrrrrrrrrrrrl}
+\toprule
+ & \multicolumn{2}{c}{RT-QA} & \multicolumn{2}{c}{RT-Sum} & \multicolumn{2}{c}{RT-D2T} & \multicolumn{2}{c}{FaithBench} & \multicolumn{2}{c}{HaluEval-QA} & \multicolumn{2}{c}{RAGTruth pooled} \\
+Method & AUC & BAcc & AUC & BAcc & AUC & BAcc & AUC & BAcc & AUC & BAcc & BAcc & 95\% CI \\
+\midrule
+Token precision & .723 & .640 & .676 & .616 & .692 & .632 & .619 & .592 & .898 & .916 & .586 & [.564, .607] \\
+TF--IDF cosine & .620 & .582 & .667 & \textbf{.638} & .671 & .620 & .617 & \textbf{.601} & .364 & .500 & .640 & [.621, .659] \\
+\midrule
+MiniLM cosine (document) & .523 & .521 & .593 & .540 & .541 & .536 & .576 & .536 & .237 & .500 & .551 & [.526, .577] \\
+MiniLM cosine (mean-max) & .683 & .626 & .620 & .597 & .645 & .604 & .513 & .513 & .251 & .498 & .611 & [.592, .630] \\
+MiniLM cosine (min-max) & .679 & .647 & .581 & .564 & .565 & .559 & .505 & .510 & .255 & .498 & .535 & [.515, .554] \\
+BGE-small cosine (mean-max) & .689 & .643 & .648 & .614 & .698 & .637 & .522 & .498 & .247 & .500 & .591 & [.572, .611] \\
+\midrule
+BERTScore & .723 & .649 & .619 & .585 & .617 & .580 & .569 & .525 & .329 & .499 & .568 & [.547, .590] \\
+NLI (SummaC-ZS style) & .654 & .630 & \textbf{.678} & .599 & .678 & \textbf{.642} & .546 & .544 & .747 & .748 & .613 & [.594, .633] \\
+\midrule
+Risk model: cosine only & .666 & .628 & .622 & .585 & .615 & .585 & .535 & .520 & .244 & .498 & .575 & [.553, .597] \\
+Risk model: cosine + checks & .721 & .661 & .626 & .589 & .671 & .630 & .572 & .574 & .304 & .499 & \textbf{.673} & [.654, .691] \\
+Risk model: full & \textbf{.808} & \textbf{.739} & .673 & .612 & \textbf{.703} & .635 & \textbf{.637} & .595 & \textbf{.977} & \textbf{.954} & .631 & [.609, .652] \\
+\bottomrule
+\end{tabular}

@@ -1,0 +1,21 @@
+\begin{tabular}{llrrrrrrrrrrrr}
+\toprule
+Pairs & Evaluator & $n$ & Neg. & Num. & Date & Entity & Role & Dir. & Causal & Add. & All & Orig.\ acc. & Para.\ acc. \\
+\midrule
+Judge (3B) subset & Judge (3B) & 299 & 11 & 11 & 10 & 9 & 20 & 7 & 0 & 12 & 10.7 & 13.0 & 12.3 \\
+ & $n$ per type & & 81 & 36 & 20 & 53 & 5 & 14 & 9 & 81 & & & 81 \\
+ & MiniLM & 299 &  &  &  &  &  &  &  &  & 8.7 & & \\
+ & BGE-small & 299 &  &  &  &  &  &  &  &  & 13.0 & & \\
+ & BERTScore & 299 &  &  &  &  &  &  &  &  & 6.4 & & \\
+ & NLI & 299 &  &  &  &  &  &  &  &  & 20.4 & & \\
+ & Risk (full) & 299 &  &  &  &  &  &  &  &  & 20.7 & & \\
+\midrule
+Judge (14B) subset & Judge (14B) & 76 & 57 & 78 & 50 & 79 & -- & 20 & 0 & 76 & 63.2 & 77.6 & 76.2 \\
+ & $n$ per type & & 21 & 9 & 2 & 14 & -- & 5 & 4 & 21 & & & 21 \\
+ & MiniLM & 76 &  &  &  &  &  &  &  &  & 10.5 & & \\
+ & BGE-small & 76 &  &  &  &  &  &  &  &  & 15.8 & & \\
+ & BERTScore & 76 &  &  &  &  &  &  &  &  & 2.6 & & \\
+ & NLI & 76 &  &  &  &  &  &  &  &  & 25.0 & & \\
+ & Risk (full) & 76 &  &  &  &  &  &  &  &  & 21.1 & & \\
+\bottomrule
+\end{tabular}

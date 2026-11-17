@@ -1,0 +1,128 @@
+{
+ "excluded": {
+  "ragtruth_quality_truncated": 29,
+  "ragtruth_quality_incorrect_refusal": 144,
+  "evouna_improper_questions": 590,
+  "evouna_missing_answer_or_judgement": 6
+ },
+ "unused_official_train_sources": {
+  "ragtruth_Data2txt": 583,
+  "ragtruth_QA": 539,
+  "ragtruth_Summary": 493,
+  "halueval_qa_items_not_sampled": 8500
+ },
+ "splits": [
+  {
+   "domain": "evouna_nq",
+   "split": "calib",
+   "n": 2999,
+   "unsupported": 807,
+   "groups": 600
+  },
+  {
+   "domain": "evouna_nq",
+   "split": "test",
+   "n": 7096,
+   "unsupported": 1801,
+   "groups": 1420
+  },
+  {
+   "domain": "evouna_nq",
+   "split": "train",
+   "n": 4999,
+   "unsupported": 1430,
+   "groups": 1000
+  },
+  {
+   "domain": "faithbench",
+   "split": "calib",
+   "n": 300,
+   "unsupported": 220,
+   "groups": 30
+  },
+  {
+   "domain": "faithbench",
+   "split": "test",
+   "n": 500,
+   "unsupported": 342,
+   "groups": 50
+  },
+  {
+   "domain": "halueval_qa",
+   "split": "calib",
+   "n": 1000,
+   "unsupported": 500,
+   "groups": 500
+  },
+  {
+   "domain": "halueval_qa",
+   "split": "test",
+   "n": 2000,
+   "unsupported": 1000,
+   "groups": 1000
+  },
+  {
+   "domain": "ragtruth_data2txt",
+   "split": "calib",
+   "n": 600,
+   "unsupported": 429,
+   "groups": 100
+  },
+  {
+   "domain": "ragtruth_data2txt",
+   "split": "test",
+   "n": 900,
+   "unsupported": 579,
+   "groups": 150
+  },
+  {
+   "domain": "ragtruth_data2txt",
+   "split": "train",
+   "n": 1199,
+   "unsupported": 836,
+   "groups": 200
+  },
+  {
+   "domain": "ragtruth_qa",
+   "split": "calib",
+   "n": 580,
+   "unsupported": 197,
+   "groups": 100
+  },
+  {
+   "domain": "ragtruth_qa",
+   "split": "test",
+   "n": 875,
+   "unsupported": 160,
+   "groups": 150
+  },
+  {
+   "domain": "ragtruth_qa",
+   "split": "train",
+   "n": 1168,
+   "unsupported": 379,
+   "groups": 200
+  },
+  {
+   "domain": "ragtruth_summary",
+   "split": "calib",
+   "n": 600,
+   "unsupported": 182,
+   "groups": 100
+  },
+  {
+   "domain": "ragtruth_summary",
+   "split": "test",
+   "n": 900,
+   "unsupported": 204,
+   "groups": 150
+  },
+  {
+   "domain": "ragtruth_summary",
+   "split": "train",
+   "n": 1200,
+   "unsupported": 385,
+   "groups": 200
+  }
+ ]
+}

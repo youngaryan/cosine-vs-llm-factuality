@@ -1,0 +1,355 @@
+{
+ "Evident Conflict": {
+  "n": 459,
+  "minilm_mm": {
+   "recall": 0.673202614379085,
+   "far_at_alpha_threshold": 0.030501089324618737,
+   "recall_ci": [
+    0.6260504201680672,
+    0.721629710194076
+   ]
+  },
+  "bge_small_mm": {
+   "recall": 0.644880174291939,
+   "far_at_alpha_threshold": 0.04139433551198257,
+   "recall_ci": [
+    0.5951264930090382,
+    0.6943953532660445
+   ]
+  },
+  "bertscore": {
+   "recall": 0.4684095860566449,
+   "far_at_alpha_threshold": 0.09586056644880174,
+   "recall_ci": [
+    0.41335771838713575,
+    0.5230826271186441
+   ]
+  },
+  "nli_mean_ec": {
+   "recall": 0.6971677559912854,
+   "far_at_alpha_threshold": 0.06535947712418301,
+   "recall_ci": [
+    0.6447201159678858,
+    0.7446363345813167
+   ]
+  },
+  "risk_full": {
+   "recall": 0.5773420479302832,
+   "far_at_alpha_threshold": 0.058823529411764705,
+   "recall_ci": [
+    0.5235958295400356,
+    0.6297809584781415
+   ]
+  },
+  "judge_small": {
+   "recall": 0.968421052631579,
+   "n": 95
+  },
+  "judge_strong": {
+   "recall": 0.75,
+   "n": 16
+  }
+ },
+ "Subtle Conflict": {
+  "n": 15,
+  "minilm_mm": {
+   "recall": 0.7333333333333333,
+   "far_at_alpha_threshold": 0.0,
+   "recall_ci": [
+    0.5,
+    0.9375
+   ]
+  },
+  "bge_small_mm": {
+   "recall": 0.8666666666666667,
+   "far_at_alpha_threshold": 0.06666666666666667,
+   "recall_ci": [
+    0.6869791666666667,
+    1.0
+   ]
+  },
+  "bertscore": {
+   "recall": 0.5333333333333333,
+   "far_at_alpha_threshold": 0.13333333333333333,
+   "recall_ci": [
+    0.2857142857142857,
+    0.7777777777777778
+   ]
+  },
+  "nli_mean_ec": {
+   "recall": 0.7333333333333333,
+   "far_at_alpha_threshold": 0.06666666666666667,
+   "recall_ci": [
+    0.46153846153846156,
+    0.9375
+   ]
+  },
+  "risk_full": {
+   "recall": 0.6666666666666666,
+   "far_at_alpha_threshold": 0.0,
+   "recall_ci": [
+    0.38461538461538464,
+    0.875
+   ]
+  },
+  "judge_small": {
+   "recall": 1.0,
+   "n": 2
+  }
+ },
+ "Evident Baseless Info": {
+  "n": 542,
+  "minilm_mm": {
+   "recall": 0.6955719557195572,
+   "far_at_alpha_threshold": 0.03505535055350553,
+   "recall_ci": [
+    0.6504239130434784,
+    0.7394510649900558
+   ]
+  },
+  "bge_small_mm": {
+   "recall": 0.7066420664206642,
+   "far_at_alpha_threshold": 0.04059040590405904,
+   "recall_ci": [
+    0.6606456333764223,
+    0.7486350226799904
+   ]
+  },
+  "bertscore": {
+   "recall": 0.5202952029520295,
+   "far_at_alpha_threshold": 0.04797047970479705,
+   "recall_ci": [
+    0.46584698798071156,
+    0.5719493386446045
+   ]
+  },
+  "nli_mean_ec": {
+   "recall": 0.7490774907749077,
+   "far_at_alpha_threshold": 0.02214022140221402,
+   "recall_ci": [
+    0.7094333471487925,
+    0.7869246532156365
+   ]
+  },
+  "risk_full": {
+   "recall": 0.6826568265682657,
+   "far_at_alpha_threshold": 0.042435424354243544,
+   "recall_ci": [
+    0.6358595194085028,
+    0.7254240270568786
+   ]
+  },
+  "judge_small": {
+   "recall": 0.9903846153846154,
+   "n": 104
+  },
+  "judge_strong": {
+   "recall": 0.6923076923076923,
+   "n": 26
+  }
+ },
+ "Subtle Baseless Info": {
+  "n": 141,
+  "minilm_mm": {
+   "recall": 0.6808510638297872,
+   "far_at_alpha_threshold": 0.0425531914893617,
+   "recall_ci": [
+    0.5895297448925585,
+    0.7659574468085106
+   ]
+  },
+  "bge_small_mm": {
+   "recall": 0.6453900709219859,
+   "far_at_alpha_threshold": 0.028368794326241134,
+   "recall_ci": [
+    0.5531874597034172,
+    0.734697742733457
+   ]
+  },
+  "bertscore": {
+   "recall": 0.5177304964539007,
+   "far_at_alpha_threshold": 0.09929078014184398,
+   "recall_ci": [
+    0.4296283255086072,
+    0.6095975420188477
+   ]
+  },
+  "nli_mean_ec": {
+   "recall": 0.7730496453900709,
+   "far_at_alpha_threshold": 0.0425531914893617,
+   "recall_ci": [
+    0.697841726618705,
+    0.8445945945945946
+   ]
+  },
+  "risk_full": {
+   "recall": 0.7163120567375887,
+   "far_at_alpha_threshold": 0.05673758865248227,
+   "recall_ci": [
+    0.6333273381294964,
+    0.7957782408738143
+   ]
+  },
+  "judge_small": {
+   "recall": 1.0,
+   "n": 22
+  },
+  "judge_strong": {
+   "recall": 1.0,
+   "n": 5
+  }
+ },
+ "Conflict only": {
+  "n": 305,
+  "minilm_mm": {
+   "recall": 0.6196721311475409,
+   "far_at_alpha_threshold": 0.036065573770491806,
+   "recall_ci": [
+    0.5611267161198878,
+    0.6822742474916388
+   ]
+  },
+  "bge_small_mm": {
+   "recall": 0.6,
+   "far_at_alpha_threshold": 0.04918032786885246,
+   "recall_ci": [
+    0.5397844199599345,
+    0.6655410998747092
+   ]
+  },
+  "bertscore": {
+   "recall": 0.4426229508196721,
+   "far_at_alpha_threshold": 0.12786885245901639,
+   "recall_ci": [
+    0.38253713897896086,
+    0.5093196999882807
+   ]
+  },
+  "nli_mean_ec": {
+   "recall": 0.659016393442623,
+   "far_at_alpha_threshold": 0.09836065573770492,
+   "recall_ci": [
+    0.6012912883274115,
+    0.7133859242420831
+   ]
+  },
+  "risk_full": {
+   "recall": 0.521311475409836,
+   "far_at_alpha_threshold": 0.07540983606557378,
+   "recall_ci": [
+    0.4641527868993659,
+    0.5808895148968678
+   ]
+  },
+  "judge_small": {
+   "recall": 0.9692307692307692,
+   "n": 65
+  },
+  "judge_strong": {
+   "recall": 0.6363636363636364,
+   "n": 11
+  }
+ },
+ "Baseless only": {
+  "n": 474,
+  "minilm_mm": {
+   "recall": 0.6624472573839663,
+   "far_at_alpha_threshold": 0.04219409282700422,
+   "recall_ci": [
+    0.6130939440993789,
+    0.7121578993486578
+   ]
+  },
+  "bge_small_mm": {
+   "recall": 0.6729957805907173,
+   "far_at_alpha_threshold": 0.04008438818565401,
+   "recall_ci": [
+    0.6257862894156808,
+    0.7229574479574479
+   ]
+  },
+  "bertscore": {
+   "recall": 0.5168776371308017,
+   "far_at_alpha_threshold": 0.06329113924050633,
+   "recall_ci": [
+    0.46231882304812766,
+    0.5711237886839637
+   ]
+  },
+  "nli_mean_ec": {
+   "recall": 0.7510548523206751,
+   "far_at_alpha_threshold": 0.035864978902953586,
+   "recall_ci": [
+    0.7114526357803861,
+    0.7918367346938775
+   ]
+  },
+  "risk_full": {
+   "recall": 0.6772151898734177,
+   "far_at_alpha_threshold": 0.05063291139240506,
+   "recall_ci": [
+    0.6292568371456917,
+    0.7254128880362748
+   ]
+  },
+  "judge_small": {
+   "recall": 1.0,
+   "n": 87
+  },
+  "judge_strong": {
+   "recall": 0.6521739130434783,
+   "n": 23
+  }
+ },
+ "Subtle only": {
+  "n": 77,
+  "minilm_mm": {
+   "recall": 0.5844155844155844,
+   "far_at_alpha_threshold": 0.03896103896103896,
+   "recall_ci": [
+    0.46424107142857146,
+    0.7088607594936709
+   ]
+  },
+  "bge_small_mm": {
+   "recall": 0.5714285714285714,
+   "far_at_alpha_threshold": 0.012987012987012988,
+   "recall_ci": [
+    0.4533333333333333,
+    0.6944746376811592
+   ]
+  },
+  "bertscore": {
+   "recall": 0.4675324675324675,
+   "far_at_alpha_threshold": 0.15584415584415584,
+   "recall_ci": [
+    0.35526315789473684,
+    0.5875183823529411
+   ]
+  },
+  "nli_mean_ec": {
+   "recall": 0.7402597402597403,
+   "far_at_alpha_threshold": 0.07792207792207792,
+   "recall_ci": [
+    0.64,
+    0.8311688311688312
+   ]
+  },
+  "risk_full": {
+   "recall": 0.6493506493506493,
+   "far_at_alpha_threshold": 0.06493506493506493,
+   "recall_ci": [
+    0.5270092460881934,
+    0.7654320987654321
+   ]
+  },
+  "judge_small": {
+   "recall": 1.0,
+   "n": 12
+  },
+  "judge_strong": {
+   "recall": 1.0,
+   "n": 1
+  }
+ }
+}

@@ -1,0 +1,29 @@
+\begin{tabular}{llrlrrlr}
+\toprule
+Policy & Gate & Judged\,\% & BAcc [95\% CI] & FAR\,\% & FRR\,\% & $\Delta$BAcc vs.\ always-judge & Random \\
+\midrule
+Always judge & -- & 100.0 & .566 [.543, .592] & 1.6 & 85.2 & -- & -- \\
+\midrule
+Never judge & Token precision & 0.0 & .569 [.516, .627] & 48.1 & 38.1 & .004 [-.051, .063] & -- \\
+Never judge & MiniLM cosine (mean-max) & 0.0 & .625 [.581, .667] & 33.3 & 41.8 & .059 [.015, .100] & -- \\
+Never judge & BGE-small cosine (mean-max) & 0.0 & .559 [.513, .603] & 41.0 & 47.2 & -.006 [-.057, .041] & -- \\
+Never judge & BERTScore & 0.0 & .567 [.514, .617] & 49.2 & 37.5 & .001 [-.055, .056] & -- \\
+Never judge & NLI (SummaC-ZS style) & 0.0 & .585 [.538, .631] & 34.4 & 48.6 & .019 [-.030, .068] & -- \\
+Never judge & Risk model: full & 0.0 & .634 [.583, .681] & 36.1 & 37.2 & .068 [.017, .117] & -- \\
+\midrule
+Gate, $\alpha=0.05$ & MiniLM cosine (mean-max) & 75.9 & .581 [.550, .613] & 7.1 & 76.7 & .015 [-.009, .041] & .579 \\
+Gate, $\alpha=0.05$ & NLI (SummaC-ZS style) & 73.3 & .583 [.551, .616] & 10.9 & 72.4 & .017 [-.009, .045] & .571 \\
+Gate, $\alpha=0.05$ & Risk model: cosine + checks & 77.9 & .595 [.566, .625] & 4.4 & 76.7 & .029 [.007, .051] & .596 \\
+Gate, $\alpha=0.05$ & Risk model: full & 64.5 & .635 [.601, .671] & 7.7 & 65.3 & .069 [.039, .101] & .589 \\
+\midrule
+Gate, $\alpha=0.1$ & MiniLM cosine (mean-max) & 67.1 & .594 [.559, .627] & 13.1 & 68.2 & .028 [-.004, .060] & .587 \\
+Gate, $\alpha=0.1$ & NLI (SummaC-ZS style) & 63.4 & .608 [.573, .643] & 16.4 & 61.9 & .043 [.013, .072] & .572 \\
+Gate, $\alpha=0.1$ & Risk model: cosine + checks & 67.9 & .631 [.599, .665] & 8.7 & 65.1 & .065 [.036, .094] & .610 \\
+Gate, $\alpha=0.1$ & Risk model: full & 58.3 & .664 [.629, .699] & 8.7 & 58.5 & .098 [.066, .132] & .595 \\
+\midrule
+Gate, $\alpha=0.2$ & MiniLM cosine (mean-max) & 53.8 & .625 [.585, .663] & 20.2 & 54.8 & .059 [.020, .096] & .593 \\
+Gate, $\alpha=0.2$ & NLI (SummaC-ZS style) & 49.2 & .619 [.577, .659] & 27.3 & 48.9 & .053 [.014, .093] & .576 \\
+Gate, $\alpha=0.2$ & Risk model: cosine + checks & 53.1 & .643 [.605, .681] & 19.1 & 52.3 & .077 [.040, .113] & .631 \\
+Gate, $\alpha=0.2$ & Risk model: full & 41.1 & .678 [.636, .720] & 21.9 & 42.6 & .112 [.070, .153] & .607 \\
+\bottomrule
+\end{tabular}

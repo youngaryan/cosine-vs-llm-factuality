@@ -1,0 +1,16 @@
+\begin{tabular}{llrrrrr}
+\toprule
+Domain & Labels & Train & Calib. & Test & Test groups & Unsup.\ (\%) \\
+\midrule
+RT-QA & human & 1168 & 580 & 875 & 150 & 18.3 \\
+RT-Sum & human & 1200 & 600 & 900 & 150 & 22.7 \\
+RT-D2T & human & 1199 & 600 & 900 & 150 & 64.3 \\
+FaithBench & human & -- & 300 & 500 & 50 & 68.4 \\
+HaluEval-QA & synthetic & -- & 1000 & 2000 & 1000 & 50.0 \\
+\midrule
+EVOUNA-NQ & human & 4999 & 2999 & 7096 & 1420 & 25.4 \\
+\midrule
+Counterfactual (RT test) & rule & -- & -- & 6145 & 1517 & 100.0 \\
+\quad paraphrase controls & LLM+rule & -- & -- & 193 & 193 & 0.0 \\
+\bottomrule
+\end{tabular}
