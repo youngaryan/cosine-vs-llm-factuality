@@ -96,7 +96,7 @@ cd paper && pdflatex main && bibtex main && pdflatex main && pdflatex main
 
 Labels used for evaluation are the datasets' human annotations, except HaluEval-QA
 (synthetic) and the counterfactual pairs (rule-generated and rule-validated, **not**
-human-annotated). LLM-judge output is never used as ground truth. The LLM-judge experiments
+human-annotated). LLM-judge output is never used as ground truth. The pipeline, analyses and manuscript were produced with substantial assistance from an AI coding agent (Claude, Anthropic) under the author's direction; the paper states this in its "Use of AI Assistance" section. The LLM-judge experiments
 are a reduced-scale pilot on fixed subsets; subset sizes are stated wherever a judge result
 is reported.
 
