@@ -99,3 +99,11 @@ Labels used for evaluation are the datasets' human annotations, except HaluEval-
 human-annotated). LLM-judge output is never used as ground truth. The LLM-judge experiments
 are a reduced-scale pilot on fixed subsets; subset sizes are stated wherever a judge result
 is reported.
+
+## Licence
+
+Code, configurations, results and the manuscript in this repository are released under the
+MIT licence (`LICENSE`). The datasets are not included; each keeps its own licence (RAGTruth
+MIT, FaithBench CC BY-NC-SA 4.0, EVOUNA Apache-2.0, HaluEval MIT; see `data/README.md`).
+The short RAGTruth excerpts in `results/cf_audit_sheet.csv` and in the paper's examples
+table remain under RAGTruth's MIT licence.
